@@ -30,15 +30,34 @@
     position: absolute;
   }
 }
-.weahter_info {
+.currentWeather {
+  display: flex;
+  margin: 10px;
+}
+.innerInfo {
   display: flex;
   flex-direction: column;
   margin: 10px;
-  font-size: 36px;
 }
 .weahter_info_title {
   display: flex;
   flex-direction: column;
   margin: 10px;
-  font-size: 50px;
+  font-size: 60px;
+}
+.time_info {
+  display: flex;
+  margin: 10px;
+  font-size: 36px;
+}
+#time {
+  margin-left: 10px;
+}
+.temp_title {
+  display: flex;
+  margin: 10px;
+  font-size: 200px;
+}
+.info_element {
+  margin: 10px;
 }

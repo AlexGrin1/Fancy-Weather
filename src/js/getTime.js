@@ -1,5 +1,5 @@
 const time = document.getElementById("time");
-const today = new Date();
+
 const dateId = document.getElementById("date");
 const weekDays = {
   0: "Sunday",
@@ -24,23 +24,27 @@ const MonthsOfYear = {
   10: "November",
   11: "December",
 };
-
-function showTime() {
-  const hour = today.getHours();
-  const min = today.getMinutes();
-  const sec = today.getSeconds();
-  time.innerHTML = `${hour}:${addZero(min)}:${addZero(sec)}`;
-  setTimeout(showTime, 1000);
-}
-function addZero(n) {
-  return (parseInt(n, 10) < 10 ? "0" : "") + n;
-}
-
+let i = 1;
 function getDate() {
+  const today = new Date();
   const day = today.getDay();
   const month = today.getMonth();
   const weekDay = today.getDate();
   dateId.innerHTML = `${weekDays[day]} ${weekDay} ${MonthsOfYear[month]}`;
 }
-getDate();
+function showTime() {
+  const today = new Date();
+  const hour = today.getHours();
+  const min = today.getMinutes();
+  const sec = today.getSeconds();
+  time.innerHTML = `${hour}:${addZero(min)}:${addZero(sec)}`;
+  setTimeout(() => {
+    showTime();
+    getDate();
+  }, 1000);
+}
+function addZero(n) {
+  return (parseInt(n, 10) < 10 ? "0" : "") + n;
+}
+
 showTime();
