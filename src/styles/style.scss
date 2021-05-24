@@ -1,0 +1,16 @@
+@import "constants";
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex: 3;
+  height: 5vh;
+  border: 2px solid blueviolet;
+}
+.wrapper {
+  display: flex;
+}
