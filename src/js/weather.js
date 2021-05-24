@@ -1,5 +1,24 @@
 const foo = document.querySelector(".weather_container");
-
+const locationAndData = document.querySelector(".locationAndTime");
+const currentWeather = document.querySelector(".currentWeather");
+const temp = document.querySelector(".temp");
+const innerInfo = document.querySelector(".innerInfo");
+let link = getWeather();
+console.log(link);
+const info = {
+  icon: link.current.condition.icon,
+  city: link.location.name,
+  country: link.location.country,
+  currentTemp_c: link.current.temp_c,
+  currentTemp_f: link.current.temp_f,
+  localTime: link.location.localTime,
+  wind_kph: link.current.wind_kph,
+  wind_mph: link.current.wind_kph,
+  humidity: link.current.humidity,
+  feelslike_c: link.current.feelslike_c,
+  feelslike_f: link.current.feelslike_f,
+  text: link.current.condition.text,
+};
 function create(link) {
   const city = document.createElement("div");
   const weather = document.createElement("div");
@@ -7,9 +26,9 @@ function create(link) {
   city.className = "weahter_info";
   weather.className = "weahter_info";
   icon.className = "weahter_info";
-  icon.setAttribute("src", link.current.condition.icon);
-  city.textContent = link.location.name;
-  weather.innerHTML = `${link.current.feelslike_c} &#8451`;
+  icon.setAttribute("src", info[icon]);
+  city.textContent = `${link.location.name}, ${link.location.country}`;
+  weather.innerHTML = `${Math.round(link.current.feelslike_c)} &#176`;
   foo.appendChild(city);
   foo.appendChild(weather);
   foo.appendChild(icon);
@@ -28,10 +47,6 @@ async function getWeather() {
   }
 }
 
-// foo.addEventListener("click", (e) => {
-//   console.log(" ogogogog");
-//   getWeather();
-// });
-foo.addEventListener("click", (e) => {
+document.addEventListener("DOMContentLoaded", (e) => {
   getWeather();
 });
