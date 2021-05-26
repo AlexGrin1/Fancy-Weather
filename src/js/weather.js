@@ -4,13 +4,15 @@ const location = document.getElementById("location");
 const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
+const weatherOn3Days = document.querySelector(".weatherOn3Days");
 let city;
 async function getWeather(city) {
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=e656736c26754e098db140545212405&q=${city}&aqi=no`
+      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=5`
     );
     const data = await response.json();
+    const i = await console.log(data);
     create(data);
   } catch {
     alert("Что-то пошло не так");
@@ -52,6 +54,15 @@ function create(link) {
     `WIND: ${Math.round(info.wind_kph * (5 / 18))} m/s`,
     `HUMIDITY: ${info.humidity}%`,
   ];
+  link.forecast.forecastday.forEach((el) => {
+    const element = document.createElement("div");
+    const icon = document.createElement("img");
+    element.innerHTML = `${Math.round(el.day.avgtemp_c)}&#176`;
+    element.className = "next_day_wether";
+    icon.setAttribute("src", el.day.condition.icon);
+    weatherOn3Days.appendChild(element);
+    weatherOn3Days.appendChild(icon);
+  });
   info_param.forEach((el) => {
     const element = document.createElement("div");
     element.innerHTML = el;
