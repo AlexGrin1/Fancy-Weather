@@ -1,3 +1,6 @@
+$inner_text: 16px;
+$title_text: 26px;
+$current_temp: 150px;
 .weather_container {
   height: 100vh;
   display: flex;
@@ -43,21 +46,42 @@
   display: flex;
   flex-direction: column;
   margin: 10px;
-  font-size: 60px;
+  font-size: $title_text;
+  font-weight: 700;
 }
 .time_info {
   display: flex;
   margin: 10px;
-  font-size: 36px;
+  font-size: $inner_text;
+  font-weight: 700;
 }
 #time {
   margin-left: 10px;
+  font-weight: 700;
 }
 .temp_title {
   display: flex;
-  margin: 10px;
-  font-size: 200px;
+  justify-content: end;
+  align-items: flex-end;
+  font-size: $current_temp;
+  font-weight: bold;
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 .info_element {
+  margin-top: 10px;
+  font-size: $inner_text;
+  font-weight: 700;
+}
+.icon {
+  position: relative;
+  right: 25px;
+}
+.weatherOn3Days {
+  display: flex;
+}
+.next_day_wether {
   margin: 10px;
+  font-size: $inner_text;
+  font-weight: 700;
 }

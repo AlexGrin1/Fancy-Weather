@@ -4,18 +4,27 @@ const location = document.getElementById("location");
 const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
-async function getWeather() {
+let city;
+async function getWeather(city) {
   try {
     const response = await fetch(
-      "http://api.weatherapi.com/v1/current.json?key=e656736c26754e098db140545212405&q=Minsk&aqi=no"
+      `http://api.weatherapi.com/v1/current.json?key=e656736c26754e098db140545212405&q=${city}&aqi=no`
     );
-    const link = await response.json();
-    create(link);
+    const data = await response.json();
+    create(data);
   } catch {
     alert("Что-то пошло не так");
   }
 }
-
+async function loc() {
+  try {
+    const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
+    const resp = await response.json();
+    getWeather(resp.city);
+  } catch {
+    alert("Что-то пошло не так");
+  }
+}
 function create(link) {
   const info = {
     icon: link.current.condition.icon,
@@ -25,7 +34,6 @@ function create(link) {
     currentTemp_f: link.current.temp_f,
     localTime: link.location.localTime,
     wind_kph: link.current.wind_kph,
-    wind_mph: link.current.wind_kph,
     humidity: link.current.humidity,
     feelslike_c: link.current.feelslike_c,
     feelslike_f: link.current.feelslike_f,
@@ -56,6 +64,7 @@ function create(link) {
   // foo.appendChild(city);
   // foo.appendChild(weather);
 }
+
 document.addEventListener("DOMContentLoaded", (e) => {
-  getWeather();
+  loc();
 });
