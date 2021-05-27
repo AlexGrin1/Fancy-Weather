@@ -1,4 +1,4 @@
-const foo = document.querySelector(".weather_container");
+const weatherContainer = document.querySelector(".weather_container");
 const locationAndData = document.querySelector(".locationAndTime");
 const location = document.getElementById("location");
 const currentWeather = document.querySelector(".currentWeather");
@@ -6,6 +6,7 @@ const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
 let city;
+let locationGeo;
 async function getWeather(city) {
   try {
     const response = await fetch(
@@ -22,6 +23,8 @@ async function loc() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
+    locationGeo = resp.loc.split(",");
+    // locationLon = resp.location.lon;
     getWeather(resp.city);
   } catch {
     alert("Что-то пошло не так");
@@ -55,11 +58,16 @@ function create(link) {
     `HUMIDITY: ${info.humidity}%`,
   ];
   link.forecast.forecastday.forEach((el) => {
+    const weekDay = document.createElement("div");
+    weekDay.textContent = new Date(el.date).toLocaleString("eng", {
+      weekday: "long",
+    });
     const element = document.createElement("div");
     const icon = document.createElement("img");
-    element.innerHTML = `${Math.round(el.day.avgtemp_c)}&#176`;
+    element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
     element.className = "next_day_wether";
     icon.setAttribute("src", el.day.condition.icon);
+    weatherOn3Days.appendChild(weekDay);
     weatherOn3Days.appendChild(element);
     weatherOn3Days.appendChild(icon);
   });

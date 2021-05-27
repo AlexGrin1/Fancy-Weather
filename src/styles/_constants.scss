@@ -19,19 +19,12 @@ $current_temp: 150px;
   flex: 1;
   border: 2px solid rgb(68, 209, 12);
 }
-.map {
+#map {
   overflow: hidden;
   position: relative;
-  width: 350px;
-  height: 350px;
-  & iframe {
-    border-radius: 10% 10% 0 10%;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-  }
+  width: 400px;
+  height: 300px;
+  border-radius: 15% 10% 0 10%;
 }
 .currentWeather {
   display: flex;
@@ -82,6 +75,6 @@ $current_temp: 150px;
 }
 .next_day_wether {
   margin: 10px;
-  font-size: $inner_text;
+  font-size: $title_text;
   font-weight: 700;
 }
