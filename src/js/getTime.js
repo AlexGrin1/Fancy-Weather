@@ -23,5 +23,4 @@ function showTime() {
 function addZero(n) {
   return (parseInt(n, 10) < 10 ? "0" : "") + n;
 }
-
 showTime();

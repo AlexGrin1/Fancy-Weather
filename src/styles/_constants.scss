@@ -44,6 +44,8 @@ $current_temp: 150px;
 }
 .time_info {
   display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin: 10px;
   font-size: $inner_text;
   font-weight: 700;
@@ -77,4 +79,18 @@ $current_temp: 150px;
   margin: 10px;
   font-size: $title_text;
   font-weight: 700;
+}
+
+.blockDayWeather {
+  display: flex;
+  flex-direction: column;
+}
+.weekDayWeather {
+  display: flex;
+  flex-direction: row;
+}
+.weekDayNext {
+  font-size: $inner_text;
+  font-weight: 700;
+  margin-top: 10px;
 }

@@ -5,8 +5,16 @@ const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
+const buttonSearch = document.querySelector("button");
+const inputCity = document.querySelector("input");
 let city;
 let locationGeo;
+let i;
+function getCity() {
+  city = inputCity.value || loc();
+  getWeather(city);
+}
+
 async function getWeather(city) {
   try {
     const response = await fetch(
@@ -24,7 +32,6 @@ async function loc() {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     locationGeo = resp.loc.split(",");
-    // locationLon = resp.location.lon;
     getWeather(resp.city);
   } catch {
     alert("Что-то пошло не так");
@@ -58,7 +65,13 @@ function create(link) {
     `HUMIDITY: ${info.humidity}%`,
   ];
   link.forecast.forecastday.forEach((el) => {
+    const blockDayWeather = document.createElement("div");
+    blockDayWeather.className = "blockDayWeather";
+    const weekDayNext = document.createElement("div");
+    weekDayNext.className = "weekDayNext";
     const weekDay = document.createElement("div");
+    const weekDayWeather = document.createElement("div");
+    weekDayWeather.className = "weekDayWeather";
     weekDay.textContent = new Date(el.date).toLocaleString("eng", {
       weekday: "long",
     });
@@ -67,9 +80,13 @@ function create(link) {
     element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
     element.className = "next_day_wether";
     icon.setAttribute("src", el.day.condition.icon);
-    weatherOn3Days.appendChild(weekDay);
-    weatherOn3Days.appendChild(element);
-    weatherOn3Days.appendChild(icon);
+
+    weatherOn3Days.appendChild(blockDayWeather);
+    blockDayWeather.appendChild(weekDayNext);
+    blockDayWeather.appendChild(weekDayWeather);
+    weekDayNext.appendChild(weekDay);
+    weekDayWeather.appendChild(element);
+    weekDayWeather.appendChild(icon);
   });
   info_param.forEach((el) => {
     const element = document.createElement("div");
@@ -85,5 +102,8 @@ function create(link) {
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
+  buttonSearch.addEventListener("click", (ev) => {
+    getCity();
+  });
   loc();
 });
