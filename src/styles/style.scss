@@ -2,20 +2,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import "constants";
+@import "base";
 @import "components";
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
 }
+body {
+  background-color: rgb(71, 71, 71);
+  color: antiquewhite;
+}
 .header {
   display: flex;
   justify-content: space-between;
   flex: 3;
   height: 5vh;
-  border: 2px solid blueviolet;
-  padding: 15px;
+  padding: 30px 100px;
 }
 .wrapper {
   display: flex;

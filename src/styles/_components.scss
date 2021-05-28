@@ -1,27 +1,22 @@
 .weather_container {
   height: 100vh;
-  display: flex;
+  @include flex_center;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   flex: 2;
-  border: 2px solid rgb(230, 33, 33);
 }
 .map_container {
   height: 100vh;
-  display: flex;
   position: relative;
-  justify-content: center;
-  align-items: center;
+  @include flex_center;
   flex: 1;
-  border: 2px solid rgb(68, 209, 12);
 }
 #map {
   overflow: hidden;
   position: relative;
   width: 400px;
   height: 300px;
-  border-radius: 15% 10% 0 10%;
+  border-radius: 10% 10% 0 10%;
+  box-shadow: 0 0 5px black;
 }
 .currentWeather {
   display: flex;
