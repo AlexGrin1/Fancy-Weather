@@ -10,8 +10,9 @@ const inputCity = document.querySelector("input");
 let city;
 let locationGeo;
 let i;
+
 function getCity() {
-  city = inputCity.value || loc();
+  city = inputCity.value || userLocation();
   getWeather(city);
 }
 
@@ -22,21 +23,36 @@ async function getWeather(city) {
     );
     const data = await response.json();
     const i = await console.log(data);
+    const locationGeo = [data.location.lon, data.location.lat];
     create(data);
+    getMaps(locationGeo);
   } catch {
     alert("Что-то пошло не так");
   }
 }
-async function loc() {
+async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
-    locationGeo = resp.loc.split(",");
+    //const locationGeo = resp.loc.split(",");
+    const b = await console.log(resp);
     getWeather(resp.city);
+    //getMaps(locationGeo);
   } catch {
     alert("Что-то пошло не так");
   }
 }
+function getMaps(coordinates) {
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  var map = new mapboxgl.Map({
+    container: "map",
+    center: coordinates,
+    zoom: 9,
+    style: "mapbox://styles/mapbox/streets-v11",
+  });
+}
+
 function create(link) {
   const info = {
     icon: link.current.condition.icon,
@@ -94,16 +110,29 @@ function create(link) {
     element.className = "info_element";
     innerInfo.appendChild(element);
   });
+}
 
-  // city.textContent = `${link.location.name}, ${link.location.country}`;
-  // weather.innerHTML = `${Math.round(link.current.feelslike_c)} &#176`;
-  // foo.appendChild(city);
-  // foo.appendChild(weather);
+function clean() {
+  location.innerHTML = "";
+  temp.innerHTML = "";
+  innerInfo.innerHTML = "";
+  const on3days = document.querySelectorAll(".blockDayWeather");
+  on3days.forEach((el) => el.remove());
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
   buttonSearch.addEventListener("click", (ev) => {
-    getCity();
+    clean();
+    //getCity();
+    getWeather(inputCity.value);
   });
-  loc();
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && inputCity.value !== "undefined") {
+      clean();
+      //getCity();
+      getWeather(inputCity.value);
+      inputCity.value = "";
+    }
+  });
+  userLocation();
 });
