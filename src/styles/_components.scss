@@ -10,6 +10,27 @@
   @include flex_center;
   flex: 1;
 }
+#buttons_block,
+#refreshAndLang,
+#choice_temp {
+  @include flex_center;
+}
+#refreshImge {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  opacity: 0.5;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    background-color: rgb(46, 46, 46);
+    border-radius: 50%;
+  }
+}
 #map {
   overflow: hidden;
   position: relative;
@@ -67,7 +88,7 @@
 .weatherOn3Days {
   display: flex;
 }
-.next_day_wether {
+.next_day_weather {
   margin: 10px;
   font-size: $title_text;
   font-weight: 700;

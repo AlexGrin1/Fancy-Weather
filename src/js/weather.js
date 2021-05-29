@@ -8,6 +8,7 @@ const weatherOn3Days = document.querySelector(".weatherOn3Days");
 const buttonSearch = document.querySelector("button");
 const inputCity = document.querySelector("input");
 let locationGeo;
+let changeChoceTemp = "c";
 
 async function getWeather(city) {
   try {
@@ -40,14 +41,29 @@ function getMaps(coordinates) {
     style: "mapbox://styles/mapbox/streets-v11",
   });
 }
+
 function createCurrentWeatherInfo(data) {
+  const choiceTemp = document.querySelector("#choice_temp");
+  const info = {
+    tempC: data.current.temp_c,
+    tempF: data.current.temp_f,
+  };
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
-  temp.innerHTML = `${Math.round(data.current.temp_c)}&#176`;
+  temp.innerHTML = `${info.tempC}&#176`;
   const icon = document.createElement("img");
   icon.setAttribute("src", data.current.condition.icon);
   icon.className = "icon";
   innerInfo.appendChild(icon);
+  choiceTemp.addEventListener("click", (ev) => {
+    if (ev.target.className === "cels") {
+      temp.innerHTML = `${info.tempC}&#176`;
+    }
+    if (ev.target.className === "forengait") {
+      temp.innerHTML = `${info.tempF}&#176`;
+    }
+  });
 }
+
 function createFutureWeatherInfo(data) {
   const info_param = [
     `${data.current.condition.text}`,
@@ -69,7 +85,7 @@ function createFutureWeatherInfo(data) {
     const element = document.createElement("div");
     const icon = document.createElement("img");
     element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
-    element.className = "next_day_wether";
+    element.className = "next_day_weather";
     icon.setAttribute("src", el.day.condition.icon);
 
     weatherOn3Days.appendChild(blockDayWeather);
