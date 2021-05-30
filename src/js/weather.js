@@ -8,7 +8,7 @@ const weatherOn3Days = document.querySelector(".weatherOn3Days");
 const buttonSearch = document.querySelector("#search");
 const inputCity = document.querySelector("input");
 let locationGeo;
-let changeChoiceTemp = "c";
+let changeChoiceTemp = "f";
 
 async function getWeather(city) {
   try {
@@ -20,7 +20,9 @@ async function getWeather(city) {
     createWeatherInfo(data);
     getMaps(locationGeo);
     console.log(response.status);
-  } catch {}
+  } catch (err) {
+    console.error;
+  }
 }
 async function userLocation() {
   try {
@@ -31,8 +33,7 @@ async function userLocation() {
   } catch {}
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -56,9 +57,9 @@ function createCurrentWeatherInfo(data) {
     `WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s`,
     `HUMIDITY: ${data.current.humidity}%`,
   ];
-
+  let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
-  temp.innerHTML = `${info.tempC}&#176`;
+  temp.innerHTML = `${data.current[changeTemp]}&#176`;
   const icon = document.createElement("img");
   icon.setAttribute("src", data.current.condition.icon);
   icon.className = "icon";
@@ -81,28 +82,47 @@ function createCurrentWeatherInfo(data) {
 
 function createFutureWeatherInfo(data) {
   data.forecast.forecastday.forEach((el) => {
-    const blockDayWeather = document.createElement("div");
-    blockDayWeather.className = "blockDayWeather";
-    const weekDayNext = document.createElement("div");
-    weekDayNext.className = "weekDayNext";
-    const weekDay = document.createElement("div");
-    const weekDayWeather = document.createElement("div");
-    weekDayWeather.className = "weekDayWeather";
-    weekDay.textContent = new Date(el.date).toLocaleString("eng", {
-      weekday: "long",
-    });
-    const element = document.createElement("div");
-    const icon = document.createElement("img");
-    element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
-    element.className = "next_day_weather";
-    icon.setAttribute("src", el.day.condition.icon);
+    const nextDayweatherBlock = `
+      <div class="blockDayWeather></div>`;
+    const htmlNextDay = `
+    <div class="weekDayNext>
+      <div class="weekDay">${new Date(el.date).toLocaleString("eng", {
+        weekday: "long",
+      })}
+      </div>
+    </div>`;
+    const htmlNextDayWeather = `
+    <div class="weekDayNext>
+      <div class="next_day_weather">${Math.round(el.day.maxtemp_c)}&#176</div>
+      <img src=${el.day.condition.icon}>
+    </div>`;
 
-    weatherOn3Days.appendChild(blockDayWeather);
-    blockDayWeather.appendChild(weekDayNext);
-    blockDayWeather.appendChild(weekDayWeather);
-    weekDayNext.appendChild(weekDay);
-    weekDayWeather.appendChild(element);
-    weekDayWeather.appendChild(icon);
+    weatherOn3Days.appendChild(nextDayweatherBlock);
+    nextDayweatherBlock.innerHTML = htmlNextDay;
+    nextDayweatherBlock.appendChild(htmlNextDayWeather);
+
+    // const blockDayWeather = document.createElement("div");
+    // blockDayWeather.className = "blockDayWeather";
+    // const weekDayNext = document.createElement("div");
+    // weekDayNext.className = "weekDayNext";
+    // const weekDay = document.createElement("div");
+    // const weekDayWeather = document.createElement("div");
+    // weekDayWeather.className = "weekDayWeather";
+    // weekDay.textContent = new Date(el.date).toLocaleString("eng", {
+    //   weekday: "long",
+    // });
+    // const element = document.createElement("div");
+    // const icon = document.createElement("img");
+    // element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
+    // element.className = "next_day_weather";
+    // icon.setAttribute("src", el.day.condition.icon);
+
+    // weatherOn3Days.appendChild(blockDayWeather);
+    // blockDayWeather.appendChild(weekDayNext);
+    // blockDayWeather.appendChild(weekDayWeather);
+    // weekDayNext.appendChild(weekDay);
+    // weekDayWeather.appendChild(element);
+    // weekDayWeather.appendChild(icon);
   });
 }
 function createWeatherInfo(data) {

@@ -3,10 +3,10 @@ const dateId = document.getElementById("date");
 
 function showDate() {
   const today = new Date();
-  const day = today.toLocaleString("eng", { weekday: "short" });
+  const day = (lang) => today.toLocaleString("eng", { weekday: "short" });
   const month = today.toLocaleString("eng", { month: "long" });
   const weekDay = today.getDate();
-  dateId.innerHTML = `${day} ${weekDay} ${month}`;
+  dateId.innerHTML = `${day()} ${weekDay} ${month}`;
 }
 
 function showTime() {
