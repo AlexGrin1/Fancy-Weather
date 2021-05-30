@@ -1,7 +1,7 @@
 const time = document.getElementById("time");
-
 const dateId = document.getElementById("date");
-function getDate() {
+
+function showDate() {
   const today = new Date();
   const day = today.toLocaleString("eng", { weekday: "short" });
   const month = today.toLocaleString("eng", { month: "long" });
@@ -16,5 +16,7 @@ function showTime() {
   const sec = today.getSeconds().toString();
   time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
 }
-setInterval(getDate, 1000);
-setInterval(showTime, 1000);
+setInterval(() => {
+  showDate();
+  showTime();
+}, 1000);

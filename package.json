@@ -5,11 +5,9 @@
   "private": true,
   "main": "./src/js/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "watch": "webpack --mode development --watch",
-    "start": "webpack-dev-server --mode development --open"
+    "watch": "webpack --mode development --watch"
   },
   "repository": {
     "type": "git",

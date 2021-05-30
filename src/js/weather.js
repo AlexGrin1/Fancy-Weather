@@ -20,7 +20,7 @@ async function getWeather(city) {
     create(data);
     getMaps(locationGeo);
   } catch {
-    alert("Что-то пошло не так");
+    alert(err.message);
   }
 }
 async function userLocation() {
@@ -28,8 +28,8 @@ async function userLocation() {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     getWeather(resp.city);
-  } catch {
-    alert("Что-то пошло не так");
+  } catch (err) {
+    alert(err.message);
   }
 }
 function getMaps(coordinates) {
@@ -58,7 +58,7 @@ function createCurrentWeatherInfo(data) {
     if (ev.target.className === "cels") {
       temp.innerHTML = `${info.tempC}&#176`;
     }
-    if (ev.target.className === "forengait") {
+    if (ev.target.className === "fahrenheit") {
       temp.innerHTML = `${info.tempF}&#176`;
     }
   });
