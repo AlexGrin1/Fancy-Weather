@@ -5,10 +5,10 @@ const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
-const buttonSearch = document.querySelector("button");
+const buttonSearch = document.querySelector("#search");
 const inputCity = document.querySelector("input");
 let locationGeo;
-let changeChoceTemp = "c";
+let changeChoiceTemp = "c";
 
 async function getWeather(city) {
   try {
@@ -17,27 +17,27 @@ async function getWeather(city) {
     );
     const data = await response.json();
     const locationGeo = [data.location.lon, data.location.lat];
-    create(data);
+    createWeatherInfo(data);
     getMaps(locationGeo);
-  } catch {
-    alert(err.message);
-  }
+    console.log(response.status);
+  } catch {}
 }
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     getWeather(resp.city);
-  } catch (err) {
-    alert(err.message);
-  }
+    console.log(response.status);
+  } catch {}
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
     zoom: 9,
+    interactive: false,
     style: "mapbox://styles/mapbox/streets-v11",
   });
 }
@@ -45,15 +45,30 @@ function getMaps(coordinates) {
 function createCurrentWeatherInfo(data) {
   const choiceTemp = document.querySelector("#choice_temp");
   const info = {
-    tempC: data.current.temp_c,
-    tempF: data.current.temp_f,
+    tempC: Math.round(data.current.temp_c),
+    tempF: Math.round(data.current.temp_f),
+    feelslikeC: Math.round(data.current.feelslike_c),
+    feelslikeF: Math.round(data.current.feelslike_f),
   };
+  const info_param = [
+    `${data.current.condition.text}`,
+    `FEELS LIKE: ${info.feelslikeC} &#176`,
+    `WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s`,
+    `HUMIDITY: ${data.current.humidity}%`,
+  ];
+
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
   temp.innerHTML = `${info.tempC}&#176`;
   const icon = document.createElement("img");
   icon.setAttribute("src", data.current.condition.icon);
   icon.className = "icon";
   innerInfo.appendChild(icon);
+  info_param.forEach((el) => {
+    const element = document.createElement("div");
+    element.innerHTML = el;
+    element.className = "info_element";
+    innerInfo.appendChild(element);
+  });
   choiceTemp.addEventListener("click", (ev) => {
     if (ev.target.className === "cels") {
       temp.innerHTML = `${info.tempC}&#176`;
@@ -65,12 +80,6 @@ function createCurrentWeatherInfo(data) {
 }
 
 function createFutureWeatherInfo(data) {
-  const info_param = [
-    `${data.current.condition.text}`,
-    `FEELS LIKE: ${Math.round(data.current.feelslike_c)} &#176`,
-    `WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s`,
-    `HUMIDITY: ${data.current.humidity}%`,
-  ];
   data.forecast.forecastday.forEach((el) => {
     const blockDayWeather = document.createElement("div");
     blockDayWeather.className = "blockDayWeather";
@@ -95,14 +104,8 @@ function createFutureWeatherInfo(data) {
     weekDayWeather.appendChild(element);
     weekDayWeather.appendChild(icon);
   });
-  info_param.forEach((el) => {
-    const element = document.createElement("div");
-    element.innerHTML = el;
-    element.className = "info_element";
-    innerInfo.appendChild(element);
-  });
 }
-function create(data) {
+function createWeatherInfo(data) {
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
 }
@@ -115,40 +118,22 @@ function clean() {
   on3days.forEach((el) => el.remove());
 }
 
-function debounce(fn, interval) {
-  let timer;
-  return function debounced() {
-    clearTimeout(timer);
-    let args = arguments;
-    let that = this;
-    timer = setTimeout(function callOriginalFn() {
-      fn.apply(that, args);
-    }, interval);
-  };
-}
-
 function onSearch() {
   clean();
   getWeather(inputCity.value);
   inputCity.value = "";
 }
 
-document.addEventListener("DOMContentLoaded", (e) => {
-  buttonSearch.addEventListener(
-    "click",
-    debounce((ev) => {
-      if (inputCity.value !== "") {
-        onSearch();
-      }
-    }, 150)
-  );
-  document.addEventListener(
-    "keydown",
-    debounce((event) => {
-      if (event.key === "Enter" && inputCity.value !== "") {
-        onSearch();
-      }
-    }, 150)
-  );
+document.addEventListener("DOMContentLoaded", (event) => {
+  buttonSearch.addEventListener("click", (event) => {
+    if (inputCity.value !== "") {
+      onSearch();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && inputCity.value !== "") {
+      onSearch();
+    }
+  });
   userLocation();
 });
