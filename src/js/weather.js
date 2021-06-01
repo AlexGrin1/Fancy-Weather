@@ -7,8 +7,10 @@ const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
 const buttonSearch = document.querySelector("#search");
 const inputCity = document.querySelector("input");
+const form = document.querySelector("form");
 let locationGeo;
-let changeChoiceTemp = "f";
+let changeChoiceTemp = "c";
+let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
 
 async function getWeather(city) {
   try {
@@ -19,21 +21,18 @@ async function getWeather(city) {
     const locationGeo = [data.location.lon, data.location.lat];
     createWeatherInfo(data);
     getMaps(locationGeo);
-    console.log(response.status);
-  } catch (err) {
-    console.error;
-  }
+  } catch {}
 }
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     getWeather(resp.city);
-    console.log(response.status);
   } catch {}
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -45,86 +44,65 @@ function getMaps(coordinates) {
 
 function createCurrentWeatherInfo(data) {
   const choiceTemp = document.querySelector("#choice_temp");
-  const info = {
-    tempC: Math.round(data.current.temp_c),
-    tempF: Math.round(data.current.temp_f),
-    feelslikeC: Math.round(data.current.feelslike_c),
-    feelslikeF: Math.round(data.current.feelslike_f),
-  };
-  const info_param = [
-    `${data.current.condition.text}`,
-    `FEELS LIKE: ${info.feelslikeC} &#176`,
-    `WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s`,
-    `HUMIDITY: ${data.current.humidity}%`,
-  ];
-  let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
+  // const info = {
+  //   tempC: Math.round(data.current.temp_c),
+  //   tempF: Math.round(data.current.temp_f),
+  //   feelslikeC: Math.round(data.current.feelslike_c),
+  //   feelslikeF: Math.round(data.current.feelslike_f),
+  // };
+  // const info_param = [
+  //   `${data.current.condition.text}`,
+  //   `FEELS LIKE: ${info.feelslikeC} &#176`,
+  //   `WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s`,
+  //   `HUMIDITY: ${data.current.humidity}%`,
+  // ];
+
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
   temp.innerHTML = `${data.current[changeTemp]}&#176`;
-  const icon = document.createElement("img");
-  icon.setAttribute("src", data.current.condition.icon);
-  icon.className = "icon";
-  innerInfo.appendChild(icon);
-  info_param.forEach((el) => {
-    const element = document.createElement("div");
-    element.innerHTML = el;
-    element.className = "info_element";
-    innerInfo.appendChild(element);
-  });
-  choiceTemp.addEventListener("click", (ev) => {
-    if (ev.target.className === "cels") {
-      temp.innerHTML = `${info.tempC}&#176`;
-    }
-    if (ev.target.className === "fahrenheit") {
-      temp.innerHTML = `${info.tempF}&#176`;
-    }
-  });
+  innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
+  <div class='info_element'>${data.current.condition.text}</div>
+  <div class='info_element'>FEELS LIKE: ${data.current.feelslike_c} &#176</div>
+  <div class='info_element'>WIND: ${Math.round(
+    data.current.wind_kph * (5 / 18)
+  )} m/s</div>
+  <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
+  `;
+
+  // info_param.forEach((el) => {
+  //   const element = document.createElement("div");
+  //   element.innerHTML = el;
+  //   element.className = "info_element";
+  //   innerInfo.appendChild(element);
+  // });
+  // choiceTemp.addEventListener("click", (ev) => {
+  //   if (ev.target.className === "cels") {
+  //     temp.innerHTML = `${info.tempC}&#176`;
+  //   }
+  //   if (ev.target.className === "fahrenheit") {
+  //     temp.innerHTML = `${info.tempF}&#176`;
+  //   }
+  // });
 }
 
 function createFutureWeatherInfo(data) {
   data.forecast.forecastday.forEach((el) => {
-    const nextDayweatherBlock = `
-      <div class="blockDayWeather></div>`;
-    const htmlNextDay = `
+    const nextDayweatherBlock = document.createElement("div");
+    nextDayweatherBlock.className = "blockDayWeather";
+    nextDayweatherBlock.innerHTML = `
     <div class="weekDayNext>
       <div class="weekDay">${new Date(el.date).toLocaleString("eng", {
         weekday: "long",
       })}
       </div>
-    </div>`;
-    const htmlNextDayWeather = `
-    <div class="weekDayNext>
+    </div>
+    <div class='weekDayWeather'>
       <div class="next_day_weather">${Math.round(el.day.maxtemp_c)}&#176</div>
       <img src=${el.day.condition.icon}>
     </div>`;
-
     weatherOn3Days.appendChild(nextDayweatherBlock);
-    nextDayweatherBlock.innerHTML = htmlNextDay;
-    nextDayweatherBlock.appendChild(htmlNextDayWeather);
-
-    // const blockDayWeather = document.createElement("div");
-    // blockDayWeather.className = "blockDayWeather";
-    // const weekDayNext = document.createElement("div");
-    // weekDayNext.className = "weekDayNext";
-    // const weekDay = document.createElement("div");
-    // const weekDayWeather = document.createElement("div");
-    // weekDayWeather.className = "weekDayWeather";
-    // weekDay.textContent = new Date(el.date).toLocaleString("eng", {
-    //   weekday: "long",
-    // });
-    // const element = document.createElement("div");
-    // const icon = document.createElement("img");
-    // element.innerHTML = `${Math.round(el.day.maxtemp_c)}&#176`;
-    // element.className = "next_day_weather";
-    // icon.setAttribute("src", el.day.condition.icon);
-
-    // weatherOn3Days.appendChild(blockDayWeather);
-    // blockDayWeather.appendChild(weekDayNext);
-    // blockDayWeather.appendChild(weekDayWeather);
-    // weekDayNext.appendChild(weekDay);
-    // weekDayWeather.appendChild(element);
-    // weekDayWeather.appendChild(icon);
   });
 }
+
 function createWeatherInfo(data) {
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
@@ -135,13 +113,14 @@ function clean() {
   temp.innerHTML = "";
   innerInfo.innerHTML = "";
   const on3days = document.querySelectorAll(".blockDayWeather");
-  on3days.forEach((el) => el.remove());
+  weatherOn3Days.innerHTML = "";
+  //on3days.forEach((el) => el.remove());
 }
 
 function onSearch() {
   clean();
-  getWeather(inputCity.value);
   inputCity.value = "";
+  getWeather(inputCity.value);
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -150,10 +129,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
       onSearch();
     }
   });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && inputCity.value !== "") {
-      onSearch();
-    }
-  });
+  // form.addEventListener("submit", (event) => {
+  //   onSearch();
+  // });
   userLocation();
 });
