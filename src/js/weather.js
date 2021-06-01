@@ -9,12 +9,20 @@ const buttonSearch = document.querySelector("#search");
 const inputCity = document.querySelector("input");
 const form = document.querySelector("form");
 const blockChoiceTemp = document.querySelector("#choice_temp");
+const activeButton = document.querySelector(".active");
+const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
 let locationGeo;
-let changeChoiceTemp = "c";
-let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
-let changeFeelsLikeTemp =
-  changeChoiceTemp !== "f" ? "feelslike_c" : "feelslike_f";
-let changeNexrDayTemp = changeChoiceTemp !== "f" ? "maxtemp_c" : "maxtemp_f";
+let changeChoiceTemp;
+let changeTemp;
+let changeFeelsLikeTemp;
+let changeNexrDayTemp;
+function getActualTemp() {
+  changeChoiceTemp = document.querySelector(".active").dataset.value;
+  changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
+  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
+}
+
 async function getWeather(city) {
   try {
     const response = await fetch(
@@ -29,6 +37,7 @@ async function getWeather(city) {
     getMaps(locationGeo);
   } catch {
     alert("Что-то пошло не так");
+    userLocation();
   }
 }
 async function userLocation() {
@@ -36,13 +45,13 @@ async function userLocation() {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     getWeather(resp.city);
-  } catch {
+  } catch (err) {
     alert("Что-то пошло не так");
+    console.log(err);
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -53,18 +62,12 @@ function getMaps(coordinates) {
 }
 
 function createCurrentWeatherInfo(data) {
-  const choiceTemp = document.querySelector("#choice_temp");
-
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
-  temp.innerHTML = `${data.current[changeTemp]}&#176`;
+  temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text}</div>
-  <div class='info_element'>FEELS LIKE: ${
-    data.current[changeFeelsLikeTemp]
-  } &#176</div>
-  <div class='info_element'>WIND: ${Math.round(
-    data.current.wind_kph * (5 / 18)
-  )} m/s</div>
+  <div class='info_element'>FEELS LIKE: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
+  <div class='info_element'>WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s</div>
   <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
   `;
 }
@@ -81,9 +84,7 @@ function createFutureWeatherInfo(data) {
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(
-        el.day[changeNexrDayTemp]
-      )}&#176</div>
+      <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
       <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
@@ -91,6 +92,8 @@ function createFutureWeatherInfo(data) {
 }
 
 function createWeatherInfo(data) {
+  clean();
+  getActualTemp();
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
 }
@@ -99,14 +102,11 @@ function clean() {
   location.innerHTML = "";
   temp.innerHTML = "";
   innerInfo.innerHTML = "";
-  const on3days = document.querySelectorAll(".blockDayWeather");
   weatherOn3Days.innerHTML = "";
-  //on3days.forEach((el) => el.remove());
 }
 
 function onSearch() {
   getWeather(inputCity.value);
-  clean();
   inputCity.value = "";
 }
 
@@ -117,11 +117,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
   userLocation();
   blockChoiceTemp.addEventListener("click", (event) => {
-    if (event.target.className === "cels") {
-      changeChoiceTemp = "c";
-    }
-    if (event.target.className === "fahrenheit") {
-      changeChoiceTemp = "f";
+    if (changeChoiceTemp !== event.target.dataset.value) {
+      buttonsTemp.forEach((el) => el.classList.remove("active"));
+      event.target.classList.add("active");
+      getWeather("Minsk");
     }
   });
 });
