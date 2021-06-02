@@ -13,6 +13,7 @@ const blockChoiceTemp = document.querySelector("#choice_temp");
 const activeButton = document.querySelector(".active");
 const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
 const coordinates = document.querySelector(".coordinates");
+const refreshImage = document.getElementById("refreshImage");
 let locationGeo;
 let changeChoiceTemp;
 let changeTemp;
@@ -22,8 +23,7 @@ let changeNexrDayTemp;
 function getActualTemp() {
   changeChoiceTemp = document.querySelector(".active").dataset.value;
   changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp =
-    changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
   changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
@@ -56,8 +56,7 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -71,13 +70,9 @@ function createCurrentWeatherInfo(data) {
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
-  <div class='info_element'>${data.current.condition.text}</div>
-  <div class='info_element'>FEELS LIKE: ${Math.round(
-    data.current[changeFeelsLikeTemp]
-  )} &#176</div>
-  <div class='info_element'>WIND: ${Math.round(
-    data.current.wind_kph * (5 / 18)
-  )} m/s</div>
+  <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
+  <div class='info_element'>FEELS LIKE: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
+  <div class='info_element'>WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s</div>
   <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
   `;
 }
@@ -88,15 +83,15 @@ function createFutureWeatherInfo(data) {
     nextDayweatherBlock.className = "blockDayWeather";
     nextDayweatherBlock.innerHTML = `
     <div class="weekDayNext>
-      <div class="weekDay">${new Date(el.date).toLocaleString("eng", {
-        weekday: "long",
-      })}
+      <div class="weekDay">${new Date(el.date)
+        .toLocaleString("eng", {
+          weekday: "long",
+        })
+        .toUpperCase()}
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(
-        el.day[changeNexrDayTemp]
-      )}&#176</div>
+      <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
       <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
@@ -134,12 +129,14 @@ function onSearch() {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  userLocation();
+  getRandomImage();
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     onSearch();
   });
-  userLocation();
-  randomImage();
+
   blockChoiceTemp.addEventListener("click", (event) => {
     if (changeChoiceTemp !== event.target.dataset.value) {
       buttonsTemp.forEach((el) => el.classList.remove("active"));
@@ -147,15 +144,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
       getWeather(location.textContent);
     }
   });
+  refreshImage.addEventListener("click", (event) => {
+    getRandomImage();
+  });
 });
-async function randomImage() {
+async function getRandomImage() {
   try {
     const response = await fetch(
       `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
     );
     const data = await response.json();
+    document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% / cover, url(${data.urls.full}), no-repeat`;
     document.body.style.backgroundImage = `url(${data.urls.full})`;
     document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundAttachment = "fixed";
   } catch (err) {
     alert("Ошибка загрузки фонового изображения");
   }

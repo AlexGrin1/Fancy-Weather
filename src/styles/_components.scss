@@ -5,6 +5,7 @@
   flex-direction: column;
   flex: 2;
   margin-top: 40px;
+  margin-bottom: 20px;
   padding-left: 10px;
 }
 .map_container {
@@ -14,6 +15,7 @@
   justify-content: flex-end;
   align-items: flex-end;
   flex: 1;
+  text-shadow: 0 0 10px black;
 }
 .coordinates {
   display: flex;
@@ -33,7 +35,6 @@
 .cels,
 .fahrenheit {
   opacity: 0.7;
-
   width: 35px;
   height: 30px;
   color: white;
@@ -42,43 +43,41 @@
   background-color: rgba(228, 228, 228, 0.123);
   &:hover {
     cursor: pointer;
-    background-color: rgba(228, 228, 228, 0.7);
+    background-color: rgba(175, 175, 175, 0.7);
   }
 }
 .active {
   opacity: 1;
-  background-color: rgba(228, 228, 228, 0.7);
+  background-color: rgba(175, 175, 175, 0.7);
 }
 #choice_lang {
   width: 45px;
   height: 30px;
   border: none;
-  background-color: rgba(228, 228, 228, 0.7);
+  background-color: rgba(175, 175, 175, 0.7);
   color: white;
   border-radius: 5px;
   &:hover {
     cursor: pointer;
-    background-color: rgba(228, 228, 228, 0.7);
+    background-color: rgba(175, 175, 175, 0.7);
   }
 }
-#refreshImge {
-  width: 35px;
+#refreshImage {
+  width: 30px;
   height: 30px;
   position: relative;
-
   margin: 5px;
   border: none;
   border-radius: 5px;
-  background-color: rgba(228, 228, 228, 0.7);
-  &::before {
-    content: "";
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 6px;
-    height: 6px;
-    background-color: rgb(46, 46, 46);
-    border-radius: 50%;
+  padding: 10px;
+  filter: brightness(80%) invert(80%);
+  background-color: rgba(255, 255, 255, 0.815);
+  background-image: url("https://www.freeiconspng.com/thumbs/refresh-icon/refresh-icon-png-2.png");
+  background-size: 23px 23px;
+  background-repeat: no-repeat;
+  background-position: center;
+  &:hover {
+    cursor: pointer;
   }
 }
 
@@ -125,7 +124,6 @@
   font-size: $current_temp;
   font-weight: bold;
   margin-left: 10px;
-  margin-bottom: 10px;
 }
 .info_element {
   margin-top: 10px;
@@ -136,6 +134,7 @@
   position: relative;
   right: 25px;
 }
+
 .weatherOn3Days {
   display: flex;
 }
@@ -157,4 +156,31 @@
   font-size: $inner_text;
   font-weight: 700;
   margin-top: 10px;
+}
+input {
+  height: 30px;
+  color: white;
+  border: 2px solid rgba(175, 175, 175, 0.7);
+  background-color: rgba(136, 136, 136, 0.123);
+  border-radius: 5px 0 0 5px;
+  padding-left: 5px;
+  &::placeholder {
+    color: white;
+  }
+}
+form {
+  display: flex;
+}
+form button {
+  height: 30px;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: rgba(175, 175, 175, 0.7);
+}
+.hide {
+  background-color: rgba(0, 0, 0, 0.342);
+  height: 100vh;
 }
