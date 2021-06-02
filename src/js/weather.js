@@ -8,10 +8,13 @@ const weatherOn3Days = document.querySelector(".weatherOn3Days");
 const buttonSearch = document.querySelector("#search");
 const inputCity = document.querySelector("input");
 const form = document.querySelector("form");
+const blockChoiceTemp = document.querySelector("#choice_temp");
 let locationGeo;
 let changeChoiceTemp = "c";
 let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
-
+let changeFeelsLikeTemp =
+  changeChoiceTemp !== "f" ? "feelslike_c" : "feelslike_f";
+let changeNexrDayTemp = changeChoiceTemp !== "f" ? "maxtemp_c" : "maxtemp_f";
 async function getWeather(city) {
   try {
     const response = await fetch(
@@ -56,7 +59,9 @@ function createCurrentWeatherInfo(data) {
   temp.innerHTML = `${data.current[changeTemp]}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text}</div>
-  <div class='info_element'>FEELS LIKE: ${data.current.feelslike_c} &#176</div>
+  <div class='info_element'>FEELS LIKE: ${
+    data.current[changeFeelsLikeTemp]
+  } &#176</div>
   <div class='info_element'>WIND: ${Math.round(
     data.current.wind_kph * (5 / 18)
   )} m/s</div>
@@ -76,7 +81,9 @@ function createFutureWeatherInfo(data) {
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(el.day.maxtemp_c)}&#176</div>
+      <div class="next_day_weather">${Math.round(
+        el.day[changeNexrDayTemp]
+      )}&#176</div>
       <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
@@ -104,13 +111,17 @@ function onSearch() {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  buttonSearch.addEventListener("click", (event) => {
-    // if (inputCity.value !== "") {
+  form.addEventListener("submit", (event) => {
     event.preventDefault();
     onSearch();
   });
-  // form.addEventListener("submit", (event) => {
-  //   onSearch();
-  // });
   userLocation();
+  blockChoiceTemp.addEventListener("click", (event) => {
+    if (event.target.className === "cels") {
+      changeChoiceTemp = "c";
+    }
+    if (event.target.className === "fahrenheit") {
+      changeChoiceTemp = "f";
+    }
+  });
 });
