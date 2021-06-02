@@ -15,14 +15,20 @@ let changeTemp = changeChoiceTemp !== "f" ? "temp_c" : "temp_f";
 async function getWeather(city) {
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=5`
+      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=3`
     );
     const data = await response.json();
+    const b = await console.log(data.error);
+    if (data.error) {
+      data.error.code === 1006
+        ? alert("Не верный ввод. Попробуйте заново")
+        : "";
+    }
     const locationGeo = [data.location.lon, data.location.lat];
     createWeatherInfo(data);
     getMaps(locationGeo);
-  } catch (error) {
-    console.log(error);
+  } catch {
+    alert("Что-то пошло не так");
   }
 }
 async function userLocation() {
@@ -30,12 +36,13 @@ async function userLocation() {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     getWeather(resp.city);
-  } catch (err) {
-    console.log(err);
+  } catch {
+    alert("Что-то пошло не так");
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -53,7 +60,9 @@ function createCurrentWeatherInfo(data) {
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text}</div>
   <div class='info_element'>FEELS LIKE: ${data.current.feelslike_c} &#176</div>
-  <div class='info_element'>WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s</div>
+  <div class='info_element'>WIND: ${Math.round(
+    data.current.wind_kph * (5 / 18)
+  )} m/s</div>
   <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
   `;
 }
