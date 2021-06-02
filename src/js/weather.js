@@ -19,10 +19,8 @@ async function getWeather(city) {
     );
     const data = await response.json();
     const b = await console.log(data.error);
-    if (data.error) {
-      data.error.code === 1006
-        ? alert("Не верный ввод. Попробуйте заново")
-        : "";
+    if (data.error && data.error.code === 1006) {
+      alert("Город не найден. Попробуйте заново");
     }
     const locationGeo = [data.location.lon, data.location.lat];
     createWeatherInfo(data);
@@ -109,6 +107,7 @@ function onSearch() {
 document.addEventListener("DOMContentLoaded", (event) => {
   buttonSearch.addEventListener("click", (event) => {
     // if (inputCity.value !== "") {
+    event.preventDefault();
     onSearch();
   });
   // form.addEventListener("submit", (event) => {
