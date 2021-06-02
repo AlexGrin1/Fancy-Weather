@@ -18,7 +18,6 @@ async function getWeather(city) {
       `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=3`
     );
     const data = await response.json();
-    const b = await console.log(data.error);
     if (data.error && data.error.code === 1006) {
       alert("Город не найден. Попробуйте заново");
     }
