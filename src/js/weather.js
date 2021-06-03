@@ -139,6 +139,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     onSearch();
   });
   userLocation();
+  randomImage();
   blockChoiceTemp.addEventListener("click", (event) => {
     if (changeChoiceTemp !== event.target.dataset.value) {
       buttonsTemp.forEach((el) => el.classList.remove("active"));
@@ -147,3 +148,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
   });
 });
+async function randomImage() {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
+    );
+    const data = await response.json();
+    document.body.style.backgroundImage = `url(${data.urls.full})`;
+    document.body.style.backgroundSize = "cover";
+  } catch (err) {
+    alert("Ошибка загрузки фонового изображения");
+  }
+}
