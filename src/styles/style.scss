@@ -14,14 +14,36 @@
 body {
   background-color: rgb(71, 71, 71);
   color: antiquewhite;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .header {
   display: flex;
   justify-content: space-between;
   flex: 3;
   height: 5vh;
-  padding: 30px 100px;
+  padding: 30px 60px;
 }
 .wrapper {
   display: flex;
+  padding-left: 60px;
+  padding-right: 60px;
+}
+@media screen and (max-width: $desktop) {
+}
+@media screen and (max-width: $tablet) {
+  .wrapper {
+    flex-direction: column;
+  }
+  .map_container {
+    align-items: center;
+  }
+  .weather_container {
+    align-items: center;
+  }
+  .coordinates {
+    text-align: center;
+  }
+}
+@media screen and (max-width: $mobile) {
 }

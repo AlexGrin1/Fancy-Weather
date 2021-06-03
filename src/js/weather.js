@@ -1,4 +1,5 @@
 const weatherContainer = document.querySelector(".weather_container");
+const mapContainer = document.querySelector(".map_container");
 const locationAndData = document.querySelector(".locationAndTime");
 const location = document.getElementById("location");
 const currentWeather = document.querySelector(".currentWeather");
@@ -11,15 +12,18 @@ const form = document.querySelector("form");
 const blockChoiceTemp = document.querySelector("#choice_temp");
 const activeButton = document.querySelector(".active");
 const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
+const coordinates = document.querySelector(".coordinates");
 let locationGeo;
 let changeChoiceTemp;
 let changeTemp;
 let changeFeelsLikeTemp;
 let changeNexrDayTemp;
+
 function getActualTemp() {
   changeChoiceTemp = document.querySelector(".active").dataset.value;
   changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeFeelsLikeTemp =
+    changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
   changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
@@ -35,7 +39,8 @@ async function getWeather(city) {
     const locationGeo = [data.location.lon, data.location.lat];
     createWeatherInfo(data);
     getMaps(locationGeo);
-  } catch {
+  } catch (err) {
+    console.log(err);
     alert("Что-то пошло не так");
     userLocation();
   }
@@ -51,7 +56,8 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -66,8 +72,12 @@ function createCurrentWeatherInfo(data) {
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text}</div>
-  <div class='info_element'>FEELS LIKE: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
-  <div class='info_element'>WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s</div>
+  <div class='info_element'>FEELS LIKE: ${Math.round(
+    data.current[changeFeelsLikeTemp]
+  )} &#176</div>
+  <div class='info_element'>WIND: ${Math.round(
+    data.current.wind_kph * (5 / 18)
+  )} m/s</div>
   <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
   `;
 }
@@ -84,7 +94,9 @@ function createFutureWeatherInfo(data) {
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
+      <div class="next_day_weather">${Math.round(
+        el.day[changeNexrDayTemp]
+      )}&#176</div>
       <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
@@ -96,6 +108,16 @@ function createWeatherInfo(data) {
   getActualTemp();
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
+  createCoordinate(data);
+}
+
+function createCoordinate(data) {
+  const latitude = String(data.location.lat).split(".");
+  const longitude = String(data.location.lon).split(".");
+  coordinates.innerHTML = `
+  <div>Latitude: ${latitude[0]}&#176 ${latitude[1]}'</div>
+  <div>Longitude: ${longitude[0]}&#176 ${longitude[1]}'</div>
+  `;
 }
 
 function clean() {
@@ -103,6 +125,7 @@ function clean() {
   temp.innerHTML = "";
   innerInfo.innerHTML = "";
   weatherOn3Days.innerHTML = "";
+  coordinates.innerHTML = "";
 }
 
 function onSearch() {
@@ -120,7 +143,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     if (changeChoiceTemp !== event.target.dataset.value) {
       buttonsTemp.forEach((el) => el.classList.remove("active"));
       event.target.classList.add("active");
-      getWeather("Minsk");
+      getWeather(location.textContent);
     }
   });
 });

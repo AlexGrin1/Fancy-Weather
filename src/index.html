@@ -15,14 +15,14 @@
          <div id="refreshAndLang">
             <button  id="refreshImge"></button>
             <select id="choice_lang">
-               <option value="En">EN</option>
-               <option value="Ru">RU</option>  
+               <option data-value="En" selected>EN</option>
+               <option data-value="Ru" >RU</option>  
             </select>
          </div>
 
          <div id="choice_temp">
-            <button class="cels active" data-value="c" >&#176 C</button>
             <button class="fahrenheit" data-value="f">&#176 F</button>
+            <button class="cels active" data-value="c" >&#176 C</button>
          </div>
       </div>
       <div>
@@ -52,6 +52,7 @@
       </section>
       <section class="map_container">
          <div id="map"></div>
+         <div class="coordinates"></div>
    </main>
 
 </body>
