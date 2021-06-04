@@ -8,8 +8,7 @@ function getLanguage() {
 function showDate() {
   getLanguage();
   const today = new Date();
-  const day = (lang) =>
-    today.toLocaleString(`${choiceLang}`, { weekday: "short" });
+  const day = (lang) => today.toLocaleString(`${choiceLang}`, { weekday: "short" });
   const month = today.toLocaleString(`${choiceLang}`, { month: "long" });
   const weekDay = today.getDate();
   dateId.innerHTML = `${day()} ${weekDay} ${month}`;
@@ -20,10 +19,7 @@ function showTime() {
   const hour = today.getHours().toString();
   const min = today.getMinutes().toString();
   const sec = today.getSeconds().toString();
-  time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(
-    2,
-    "0"
-  )}:${sec.padStart(2, "0")}`;
+  time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
 }
 setInterval(() => {
   showDate();
