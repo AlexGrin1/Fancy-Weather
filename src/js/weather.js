@@ -1,3 +1,5 @@
+import loc, { libary } from "./getLocation.js";
+import { language } from "./getTime.js";
 const weatherContainer = document.querySelector(".weather_container");
 const mapContainer = document.querySelector(".map_container");
 const locationAndData = document.querySelector(".locationAndTime");
@@ -6,7 +8,7 @@ const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
-const buttonSearch = document.querySelector("#search");
+
 const inputCity = document.querySelector("input");
 const form = document.querySelector("form");
 const blockChoiceTemp = document.querySelector("#choice_temp");
@@ -14,6 +16,7 @@ const activeButton = document.querySelector(".active");
 const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
 const coordinates = document.querySelector(".coordinates");
 const refreshImage = document.getElementById("refreshImage");
+
 let locationGeo;
 let changeChoiceTemp;
 let changeTemp;
@@ -27,16 +30,17 @@ function getActualTemp() {
   changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
-async function getWeather(city) {
+export async function getWeather(city) {
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=3`
+      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=3&lang=${language}`
     );
     const data = await response.json();
     if (data.error && data.error.code === 1006) {
       alert("Город не найден. Попробуйте заново");
     }
     const locationGeo = [data.location.lon, data.location.lat];
+    console.log(data);
     createWeatherInfo(data);
     getMaps(locationGeo);
   } catch (err) {
@@ -71,9 +75,11 @@ function createCurrentWeatherInfo(data) {
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
-  <div class='info_element'>FEELS LIKE: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
-  <div class='info_element'>WIND: ${Math.round(data.current.wind_kph * (5 / 18))} m/s</div>
-  <div class='info_element'>HUMIDITY: ${data.current.humidity}%</div>
+  <div class='info_element'>${libary[language].feel}: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
+  <div class='info_element'>${libary[language].wind}: ${Math.round(data.current.wind_kph * (5 / 18))} ${
+    libary[language].speed
+  }</div>
+  <div class='info_element'>${libary[language].humidity}: ${data.current.humidity}%</div>
   `;
 }
 
@@ -84,7 +90,7 @@ function createFutureWeatherInfo(data) {
     nextDayweatherBlock.innerHTML = `
     <div class="weekDayNext>
       <div class="weekDay">${new Date(el.date)
-        .toLocaleString("eng", {
+        .toLocaleString(`${language}`, {
           weekday: "long",
         })
         .toUpperCase()}
@@ -101,6 +107,7 @@ function createFutureWeatherInfo(data) {
 function createWeatherInfo(data) {
   clean();
   getActualTemp();
+
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
   createCoordinate(data);
@@ -110,8 +117,8 @@ function createCoordinate(data) {
   const latitude = String(data.location.lat).split(".");
   const longitude = String(data.location.lon).split(".");
   coordinates.innerHTML = `
-  <div>Latitude: ${latitude[0]}&#176 ${latitude[1]}'</div>
-  <div>Longitude: ${longitude[0]}&#176 ${longitude[1]}'</div>
+  <div>${libary[language].latitude}: ${latitude[0]}&#176 ${latitude[1]}'</div>
+  <div>${libary[language].longitude}: ${longitude[0]}&#176 ${longitude[1]}'</div>
   `;
 }
 
@@ -130,6 +137,7 @@ function onSearch() {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
+
   getRandomImage();
 
   form.addEventListener("submit", (event) => {

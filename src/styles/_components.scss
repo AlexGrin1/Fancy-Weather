@@ -145,11 +145,11 @@
 
 .weatherOn3Days {
   display: flex;
+  font-weight: bold;
 }
 .next_day_weather {
   margin: 10px;
   font-size: $title_text;
-  font-weight: 700;
 }
 
 .blockDayWeather {
@@ -162,7 +162,7 @@
 }
 .weekDayNext {
   font-size: $inner_text;
-  font-weight: 700;
+
   margin-top: 10px;
 }
 input {
