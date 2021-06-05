@@ -83,8 +83,7 @@
   &:hover {
     box-shadow: 0 0 10px black;
     cursor: pointer;
-    transform: rotate(90deg);
-    transition: 0.5s;
+    transition: 0.1s;
     filter: brightness(100);
   }
 }

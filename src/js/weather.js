@@ -1,23 +1,15 @@
 import loc, { libary } from "./getLocation.js";
-import { language } from "./getTime.js";
-const weatherContainer = document.querySelector(".weather_container");
-const mapContainer = document.querySelector(".map_container");
-const locationAndData = document.querySelector(".locationAndTime");
+import { showTime, language } from "./getTime.js";
 const location = document.getElementById("location");
-const currentWeather = document.querySelector(".currentWeather");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
-
 const inputCity = document.querySelector("input");
 const form = document.querySelector("form");
 const blockChoiceTemp = document.querySelector("#choice_temp");
-const activeButton = document.querySelector(".active");
 const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
 const coordinates = document.querySelector(".coordinates");
 const refreshImage = document.getElementById("refreshImage");
-
-let locationGeo;
 let changeChoiceTemp;
 let changeTemp;
 let changeFeelsLikeTemp;
@@ -33,15 +25,18 @@ function getActualTemp() {
 export async function getWeather(city) {
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=3&lang=${language}`
+      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`
     );
     const data = await response.json();
     if (data.error && data.error.code === 1006) {
       alert("Город не найден. Попробуйте заново");
     }
     const locationGeo = [data.location.lon, data.location.lat];
-    console.log(data);
+    timezone = data.location.tz_id;
     createWeatherInfo(data);
+    if (inputCity !== city) {
+      getRandomImage();
+    }
     getMaps(locationGeo);
   } catch (err) {
     console.log(err);
@@ -49,10 +44,12 @@ export async function getWeather(city) {
     userLocation();
   }
 }
+export let timezone;
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
+    timezone = resp.timezone;
     getWeather(resp.city);
   } catch (err) {
     alert("Что-то пошло не так");
@@ -107,7 +104,6 @@ function createFutureWeatherInfo(data) {
 function createWeatherInfo(data) {
   clean();
   getActualTemp();
-
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
   createCoordinate(data);
@@ -137,9 +133,10 @@ function onSearch() {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
-
-  getRandomImage();
-
+  if (localStorage.getItem("language") !== null) {
+  }
+  if (localStorage.getItem("temperature") !== null) {
+  }
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     onSearch();

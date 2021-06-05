@@ -1,4 +1,4 @@
-import { getWeather } from "./weather.js";
+import { timezone, getWeather } from "./weather.js";
 import loc, { libary } from "./getLocation.js";
 const time = document.getElementById("time");
 const dateId = document.getElementById("date");
@@ -7,11 +7,8 @@ const buttonSearch = document.querySelector("#search");
 const input = document.querySelector("input");
 const currentLocation = document.getElementById("location");
 export let language = "EN";
-// export function getLanguage() {
-//   language = lang.querySelector("[selected]").dataset.value;
-// }
+
 function showDate() {
-  // getLanguage();
   const today = new Date();
   const day = (lang) => today.toLocaleString(`${language}`, { weekday: "short" });
   const month = today.toLocaleString(`${language}`, { month: "long" });
@@ -19,8 +16,8 @@ function showDate() {
   dateId.innerHTML = `${day()} ${weekDay} ${month}`;
 }
 
-function showTime() {
-  const today = new Date();
+export function showTime() {
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: `${timezone}` }));
   const hour = today.getHours().toString();
   const min = today.getMinutes().toString();
   const sec = today.getSeconds().toString();
