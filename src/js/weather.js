@@ -95,7 +95,7 @@ function createFutureWeatherInfo(data) {
     </div>
     <div class='weekDayWeather'>
       <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
-      <img src=${el.day.condition.icon}>
+      // <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
   });
@@ -131,6 +131,21 @@ function onSearch() {
   inputCity.value = "";
 }
 
+async function getRandomImage() {
+  try {
+    const response = await fetch(
+      `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
+    );
+    const data = await response.json();
+    document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% / cover, url(${data.urls.full}), no-repeat`;
+    document.body.style.backgroundImage = `url(${data.urls.full})`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundAttachment = "fixed";
+  } catch (err) {
+    alert("Ошибка загрузки фонового изображения");
+  }
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   if (localStorage.getItem("language") !== null) {
@@ -153,17 +168,3 @@ document.addEventListener("DOMContentLoaded", (event) => {
     getRandomImage();
   });
 });
-async function getRandomImage() {
-  try {
-    const response = await fetch(
-      `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
-    );
-    const data = await response.json();
-    document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% / cover, url(${data.urls.full}), no-repeat`;
-    document.body.style.backgroundImage = `url(${data.urls.full})`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundAttachment = "fixed";
-  } catch (err) {
-    alert("Ошибка загрузки фонового изображения");
-  }
-}
