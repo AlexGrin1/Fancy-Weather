@@ -10,24 +10,18 @@ export let language = localStorage.getItem("language") || "EN";
 
 function showDate() {
   const today = new Date();
-  const day = (lang) =>
-    today.toLocaleString(`${language}`, { weekday: "short" });
+  const day = (lang) => today.toLocaleString(`${language}`, { weekday: "short" });
   const month = today.toLocaleString(`${language}`, { month: "long" });
   const weekDay = today.getDate();
   dateId.innerHTML = `${day()} ${weekDay} ${month}`;
 }
 
 export function showTime() {
-  const today = new Date(
-    new Date().toLocaleString("en-US", { timeZone: `${timezone}` })
-  );
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: `${timezone}` }));
   const hour = today.getHours().toString();
   const min = today.getMinutes().toString();
   const sec = today.getSeconds().toString();
-  time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(
-    2,
-    "0"
-  )}:${sec.padStart(2, "0")}`;
+  time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
 }
 setInterval(() => {
   showDate();
@@ -45,9 +39,3 @@ function changeLanguage(e) {
 lang.addEventListener("change", (event) => {
   changeLanguage(event);
 });
-// buttonsTemp.forEach((el) => {
-//   el.removeAttribute("selected");
-//   if (el.dataset.value === localStorage.getItem("temperature")) {
-//     el.setAttribute("selected", "");
-//   }
-// });
