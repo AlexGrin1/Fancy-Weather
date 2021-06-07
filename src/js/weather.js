@@ -16,9 +16,16 @@ let changeFeelsLikeTemp;
 let changeNexrDayTemp;
 
 function getActualTemp() {
-  changeChoiceTemp = document.querySelector(".active").dataset.value;
+  changeChoiceTemp =
+    localStorage.getItem("temperature") ||
+    document.querySelector(".active").dataset.value;
+  buttonsTemp.forEach((el) => {
+    el.classList.remove("active");
+    if (el.dataset.value === changeChoiceTemp) el.classList.add("active");
+  });
   changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeFeelsLikeTemp =
+    changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
   changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
@@ -57,7 +64,8 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -72,11 +80,15 @@ function createCurrentWeatherInfo(data) {
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
   innerInfo.innerHTML = `<img src=${data.current.condition.icon} class="icon">
   <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
-  <div class='info_element'>${libary[language].feel}: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
-  <div class='info_element'>${libary[language].wind}: ${Math.round(data.current.wind_kph * (5 / 18))} ${
-    libary[language].speed
-  }</div>
-  <div class='info_element'>${libary[language].humidity}: ${data.current.humidity}%</div>
+  <div class='info_element'>${libary[language].feel}: ${Math.round(
+    data.current[changeFeelsLikeTemp]
+  )} &#176</div>
+  <div class='info_element'>${libary[language].wind}: ${Math.round(
+    data.current.wind_kph * (5 / 18)
+  )} ${libary[language].speed}</div>
+  <div class='info_element'>${libary[language].humidity}: ${
+    data.current.humidity
+  }%</div>
   `;
 }
 
@@ -94,15 +106,17 @@ function createFutureWeatherInfo(data) {
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
-      // <img src=${el.day.condition.icon}>
+      <div class="next_day_weather">${Math.round(
+        el.day[changeNexrDayTemp]
+      )}&#176</div>
+       <img src=${el.day.condition.icon}>
     </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
   });
 }
 
 function createWeatherInfo(data) {
-  clean();
+  cleanOldInfo();
   getActualTemp();
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
@@ -118,7 +132,7 @@ function createCoordinate(data) {
   `;
 }
 
-function clean() {
+function cleanOldInfo() {
   location.innerHTML = "";
   temp.innerHTML = "";
   innerInfo.innerHTML = "";
@@ -148,19 +162,14 @@ async function getRandomImage() {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
-  if (localStorage.getItem("language") !== null) {
-  }
-  if (localStorage.getItem("temperature") !== null) {
-  }
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     onSearch();
   });
-
   blockChoiceTemp.addEventListener("click", (event) => {
     if (changeChoiceTemp !== event.target.dataset.value) {
-      buttonsTemp.forEach((el) => el.classList.remove("active"));
-      event.target.classList.add("active");
+      localStorage.setItem("temperature", event.target.dataset.value);
       getWeather(location.textContent);
     }
   });
