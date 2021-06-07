@@ -100,8 +100,8 @@ function createFutureWeatherInfo(data) {
     </div>
     <div class='weekDayWeather'>
       <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
-       <img src= "/assets/day.svg"
-    </div>`; //el.day.condition.icon
+       <img src=${el.day.condition.icon}>
+    </div>`;
     weatherOn3Days.appendChild(nextDayweatherBlock);
   });
 }
