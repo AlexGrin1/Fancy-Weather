@@ -13,6 +13,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
   },
   plugins: [
+    new CopyWebpackPlugin([{ from: "src/assets", to: "assets" }]),
     new HTMLwebpackPlugin({
       template: "./src/index.html",
     }),

@@ -9,6 +9,7 @@ export const libary = {
     placeholder: "Search city",
     latitude: "Latutude",
     longitude: "Longitude",
+    sunny: "./assets/day.svg",
   },
   RU: {
     text: "",
