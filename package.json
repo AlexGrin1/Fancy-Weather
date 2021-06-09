@@ -21,6 +21,7 @@
   "homepage": "https://github.com/AlexGrin1/Fancy-Weather#readme",
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.4",
     "extract-text-webpack-plugin": "^3.0.2",

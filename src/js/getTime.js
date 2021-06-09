@@ -7,6 +7,7 @@ const buttonSearch = document.querySelector("#search");
 const input = document.querySelector("input");
 const currentLocation = document.getElementById("location");
 export let language = localStorage.getItem("language") || "EN";
+// export let dayOrNight = "day";
 
 function showDate() {
   const today = new Date();
@@ -22,6 +23,11 @@ export function showTime() {
   const min = today.getMinutes().toString();
   const sec = today.getSeconds().toString();
   time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
+  // if (21 < hour < 23 || 0 < hour < 5) {
+  //   dayOrNight = "night";
+  // } else {
+  //   dayOrNight = "day";
+  // }
 }
 setInterval(() => {
   showDate();

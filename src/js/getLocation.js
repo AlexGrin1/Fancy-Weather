@@ -22,4 +22,15 @@ export const libary = {
     latitude: "Широта",
     longitude: "Долгота",
   },
+  icons: {
+    day: {},
+    night: {},
+    icon: (el) => {
+      if (`${el.day.condition.code}` !== "undefined") {
+        return `./assets/${el.day.condition.code}.svg`;
+      } else {
+        return `${el.day.condition.icon}`;
+      }
+    },
+  },
 };
