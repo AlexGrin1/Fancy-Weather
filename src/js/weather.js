@@ -17,13 +17,16 @@ let changeFeelsLikeTemp;
 let changeNexrDayTemp;
 
 function getActualTemp() {
-  changeChoiceTemp = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
+  changeChoiceTemp =
+    localStorage.getItem("temperature") ||
+    document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
     if (el.dataset.value === changeChoiceTemp) el.classList.add("active");
   });
   changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeFeelsLikeTemp =
+    changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
   changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
@@ -41,7 +44,7 @@ export async function getWeather(city) {
     timezone = data.location.tz_id;
     createWeatherInfo(data);
     if (inputCity !== city) {
-      // getRandomImage();
+      getRandomImage();
     }
     getMaps(locationGeo);
   } catch (err) {
@@ -61,7 +64,8 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -74,13 +78,19 @@ function getMaps(coordinates) {
 function createCurrentWeatherInfo(data) {
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
-  innerInfo.innerHTML = `<img src='./assets/${data.current.condition.code}.svg' class="icon">
+  innerInfo.innerHTML = `<img src='./assets/${
+    data.current.condition.code
+  }.svg' class="icon">
   <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
-  <div class='info_element'>${libary[language].feel}: ${Math.round(data.current[changeFeelsLikeTemp])} &#176</div>
-  <div class='info_element'>${libary[language].wind}: ${Math.round(data.current.wind_kph * (5 / 18))} ${
-    libary[language].speed
-  }</div>
-  <div class='info_element'>${libary[language].humidity}: ${data.current.humidity}%</div>
+  <div class='info_element'>${libary[language].feel}: ${Math.round(
+    data.current[changeFeelsLikeTemp]
+  )} &#176</div>
+  <div class='info_element'>${libary[language].wind}: ${Math.round(
+    data.current.wind_kph * (5 / 18)
+  )} ${libary[language].speed}</div>
+  <div class='info_element'>${libary[language].humidity}: ${
+    data.current.humidity
+  }%</div>
   `;
 }
 
@@ -98,7 +108,9 @@ function createFutureWeatherInfo(data) {
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(el.day[changeNexrDayTemp])}&#176</div>
+      <div class="next_day_weather">${Math.round(
+        el.day[changeNexrDayTemp]
+      )}&#176</div>
        <img src='${libary.icons.icon(el)}'>
     </div>`;
     //${el.day.condition.icon}
@@ -159,7 +171,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
+    if (
+      el.dataset.value.toUpperCase() ===
+      localStorage.getItem("language").toUpperCase()
+    ) {
       el.setAttribute("selected", "");
     }
   });

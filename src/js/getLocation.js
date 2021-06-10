@@ -26,6 +26,7 @@ export const libary = {
     day: {},
     night: {},
     icon: (el) => {
+      console.log();
       if (`${el.day.condition.code}` !== "undefined") {
         return `./assets/${el.day.condition.code}.svg`;
       } else {
