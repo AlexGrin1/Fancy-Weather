@@ -7,12 +7,19 @@ const buttonSearch = document.querySelector("#search");
 const input = document.querySelector("input");
 const currentLocation = document.getElementById("location");
 export let language = localStorage.getItem("language") || "EN";
-// export let dayOrNight = "day";
+
+export function dayOrNight(hour) {
+  if (21 < hour < 23 || 0 < hour < 5) {
+    return "night";
+  } else {
+    return "day";
+  }
+}
 
 function showDate() {
   const today = new Date();
-  const day = (lang) => today.toLocaleString(`${language}`, { weekday: "short" });
-  const month = today.toLocaleString(`${language}`, { month: "long" });
+  const day = (lang) => today.toLocaleString(language, { weekday: "short" });
+  const month = today.toLocaleString(language, { month: "long" });
   const weekDay = today.getDate();
   dateId.innerHTML = `${day()} ${weekDay} ${month}`;
 }
@@ -23,11 +30,7 @@ export function showTime() {
   const min = today.getMinutes().toString();
   const sec = today.getSeconds().toString();
   time.innerHTML = `${hour.padStart(2, "0")}:${min.padStart(2, "0")}:${sec.padStart(2, "0")}`;
-  // if (21 < hour < 23 || 0 < hour < 5) {
-  //   dayOrNight = "night";
-  // } else {
-  //   dayOrNight = "day";
-  // }
+  dayOrNight(hour);
 }
 setInterval(() => {
   showDate();

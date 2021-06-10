@@ -111,6 +111,7 @@
   margin: 10px;
   font-size: $title_text;
   font-weight: 700;
+  text-transform: uppercase;
 }
 .time_info {
   display: flex;
@@ -136,6 +137,7 @@
   margin-top: 10px;
   font-size: $inner_text;
   font-weight: 700;
+  text-transform: uppercase;
 }
 .icon {
   position: relative;
@@ -146,6 +148,8 @@
 .weatherOn3Days {
   display: flex;
   font-weight: bold;
+  text-transform: uppercase;
+  margin: 10px;
 }
 .next_day_weather {
   margin: 10px;
@@ -156,15 +160,11 @@
   display: flex;
   flex-direction: column;
 }
-.weekDayWeather {
+.weekDayWeather,
+form {
   display: flex;
-  flex-direction: row;
 }
-.weekDayNext {
-  font-size: $inner_text;
 
-  margin-top: 10px;
-}
 input {
   height: 30px;
   color: white;
@@ -175,9 +175,6 @@ input {
   &::placeholder {
     color: white;
   }
-}
-form {
-  display: flex;
 }
 form button {
   height: 30px;

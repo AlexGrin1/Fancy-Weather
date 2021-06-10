@@ -14,20 +14,17 @@ const variantsLanguage = document.querySelectorAll("option");
 let changeChoiceTemp;
 let changeTemp;
 let changeFeelsLikeTemp;
-let changeNexrDayTemp;
+let changeNextDayTemp;
 
 function getActualTemp() {
-  changeChoiceTemp =
-    localStorage.getItem("temperature") ||
-    document.querySelector(".active").dataset.value;
+  changeChoiceTemp = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
     if (el.dataset.value === changeChoiceTemp) el.classList.add("active");
   });
   changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp =
-    changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
-  changeNexrDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
+  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
+  changeNextDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
 export async function getWeather(city) {
@@ -36,7 +33,6 @@ export async function getWeather(city) {
       `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`
     );
     const data = await response.json();
-    console.log(data);
     if (data.error && data.error.code === 1006) {
       alert("Город не найден. Попробуйте заново");
     }
@@ -64,8 +60,7 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -76,51 +71,42 @@ function getMaps(coordinates) {
 }
 
 function createCurrentWeatherInfo(data) {
-  location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
+  const city = data.location.name;
+  const country = data.location.country;
+  const iconCode = libary.icons.icon(data.current.condition.code);
+  const weatherText = data.current.condition.text;
+  const feelsLikeInfo = Math.round(data.current[changeFeelsLikeTemp]);
+  const windInfo = Math.round(data.current.wind_kph * (5 / 18));
+  const humidityInfo = data.current.humidity;
+  location.textContent = `${city}, ${country}`;
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
-  innerInfo.innerHTML = `<img src=${libary.icons.icon(
-    data.current
-  )} class="icon">
-  <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
-  <div class='info_element'>${libary[language].feel}: ${Math.round(
-    data.current[changeFeelsLikeTemp]
-  )} &#176</div>
-  <div class='info_element'>${libary[language].wind}: ${Math.round(
-    data.current.wind_kph * (5 / 18)
-  )} ${libary[language].speed}</div>
-  <div class='info_element'>${libary[language].humidity}: ${
-    data.current.humidity
-  }%</div>
+  innerInfo.innerHTML = `<img src=${iconCode} class="icon">
+  <div class='info_element'>${weatherText}</div>
+  <div class='info_element'>${libary[language].feel}: ${feelsLikeInfo} &#176</div>
+  <div class='info_element'>${libary[language].wind}: ${windInfo} ${libary[language].speed}</div>
+  <div class='info_element'>${libary[language].humidity}: ${humidityInfo}%</div>
   `;
 }
 
 function createFutureWeatherInfo(data) {
   data.forecast.forecastday.forEach((el) => {
+    const celsOrFahrenheit = Math.round(el.day[changeNextDayTemp]);
+    const iconCode = libary.icons.icon(el.day.condition.code);
     const nextDayweatherBlock = document.createElement("div");
     nextDayweatherBlock.className = "blockDayWeather";
     nextDayweatherBlock.innerHTML = `
     <div class="weekDayNext>
-      <div class="weekDay">${new Date(el.date)
-        .toLocaleString(`${language}`, {
-          weekday: "long",
-        })
-        .toUpperCase()}
+      <div class="week_day">${new Date(el.date).toLocaleString(language, {
+        weekday: "long",
+      })}
       </div>
     </div>
     <div class='weekDayWeather'>
-      <div class="next_day_weather">${Math.round(
-        el.day[changeNexrDayTemp]
-      )}&#176</div>
-       <img src='${libary.icons.icon(el)}'>
+      <div class="next_day_weather">${celsOrFahrenheit}&#176</div>
+       <img src='${iconCode}'>
     </div>`;
-    //${el.day.condition.icon}
     weatherOn3Days.appendChild(nextDayweatherBlock);
   });
-}
-function getIcons(data) {
-  const iconCode = `./assets/${el.day.condition.code}.svg`;
-  const defaultIcon = `${data.day.condition.icon}`;
-  return iconCode || defaultIcon;
 }
 function createWeatherInfo(data) {
   cleanOldInfo();
@@ -171,10 +157,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (
-      el.dataset.value.toUpperCase() ===
-      localStorage.getItem("language").toUpperCase()
-    ) {
+    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
       el.setAttribute("selected", "");
     }
   });

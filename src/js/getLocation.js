@@ -1,3 +1,4 @@
+import { dayOrNight } from "./getTime.js";
 export const libary = {
   EN: {
     text: "",
@@ -32,39 +33,33 @@ export const libary = {
     partyCloudy: [1003, 1006],
     cloudy: [1009, 1135, 1147],
     clear: [1000],
-    day: {},
-    night: {},
-    icon: (el) => {
-      console.log(el.day);
-      const iconsCode =
-        el.day === "undefined" ? el.condition.code : el.day.condition.code;
-
-      if (libary.icons.codesOfLightRain.includes(iconsCode)) {
+    icon: (code) => {
+      if (libary.icons.codesOfLightRain.includes(code)) {
         return "./assets/1063.svg";
       }
-      if (libary.icons.codesOfModerateRain.includes(iconsCode)) {
+      if (libary.icons.codesOfModerateRain.includes(code)) {
         return "./assets/1189.svg";
       }
-      if (libary.icons.heavyRainСodes.includes(iconsCode)) {
+      if (libary.icons.heavyRainСodes.includes(code)) {
         return "./assets/1246.svg";
       }
-      if (libary.icons.codesOfLightSnow.includes(iconsCode)) {
+      if (libary.icons.codesOfLightSnow.includes(code)) {
         return "./assets/1066.svg";
       }
-      if (libary.icons.codesOfModerateSnow.includes(iconsCode)) {
+      if (libary.icons.codesOfModerateSnow.includes(code)) {
         return "./assets/1201.svg";
       }
-      if (libary.icons.heavySnowСodes.includes(iconsCode)) {
+      if (libary.icons.heavySnowСodes.includes(code)) {
         return "./assets/1114.svg";
       }
-      if (libary.icons.cloudy.includes(iconsCode)) {
+      if (libary.icons.cloudy.includes(code)) {
         return "./assets/1135.svg";
       }
-      if (libary.icons.partyCloudy.includes(iconsCode)) {
-        return "./assets/1006.svg";
+      if (libary.icons.partyCloudy.includes(code)) {
+        return dayOrNight === "day" ? "./assets/cloudy-day-3.svg" : "./assets/cloudy-night-2.svg";
       }
-      if (libary.icons.clear.includes(iconsCode)) {
-        return "./assets/1000.svg";
+      if (libary.icons.clear.includes(code)) {
+        return dayOrNight === "day" ? "./assets/1000.svg" : "./assets/clear.svg";
       } else {
         return "./assets/1009.svg";
       }
