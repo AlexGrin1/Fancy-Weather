@@ -78,9 +78,9 @@ function getMaps(coordinates) {
 function createCurrentWeatherInfo(data) {
   location.textContent = `${data.location.name.toUpperCase()}, ${data.location.country.toUpperCase()}`;
   temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
-  innerInfo.innerHTML = `<img src='./assets/${
-    data.current.condition.code
-  }.svg' class="icon">
+  innerInfo.innerHTML = `<img src=${libary.icons.icon(
+    data.current
+  )} class="icon">
   <div class='info_element'>${data.current.condition.text.toUpperCase()}</div>
   <div class='info_element'>${libary[language].feel}: ${Math.round(
     data.current[changeFeelsLikeTemp]
