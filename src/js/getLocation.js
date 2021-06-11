@@ -35,33 +35,33 @@ export const libary = {
     clear: [1000],
     icon: (code) => {
       if (libary.icons.codesOfLightRain.includes(code)) {
-        return "./assets/1063.svg";
+        return "./assets/lightRain.svg";
       }
       if (libary.icons.codesOfModerateRain.includes(code)) {
-        return "./assets/1189.svg";
+        return "./assets/moderateRain.svg";
       }
       if (libary.icons.heavyRainСodes.includes(code)) {
-        return "./assets/1195.svg";
+        return "./assets/heavyRain.svg";
       }
       if (libary.icons.codesOfLightSnow.includes(code)) {
-        return "./assets/1066.svg";
+        return "./assets/lightSnow.svg";
       }
       if (libary.icons.codesOfModerateSnow.includes(code)) {
-        return "./assets/snowy-4.svg";
+        return "./assets/moderateSnow.svg";
       }
       if (libary.icons.heavySnowСodes.includes(code)) {
-        return "./assets/snowy-6.svg";
+        return "./assets/heavySnow.svg";
       }
       if (libary.icons.cloudy.includes(code)) {
-        return "./assets/1135.svg";
+        return "./assets/cloudy.svg";
       }
       if (libary.icons.partyCloudy.includes(code)) {
         return dayOrNight() === "day" ? "./assets/cloudy-day-2.svg" : "./assets/cloudy-night-2.svg";
       }
       if (libary.icons.clear.includes(code)) {
-        return dayOrNight() === "day" ? "./assets/1000.svg" : "./assets/clear.svg";
+        return dayOrNight() === "day" ? "./assets/sunny.svg" : "./assets/clear.svg";
       } else {
-        return "./assets/1135.svg";
+        return "./assets/cloudy.svg";
       }
     },
   },
