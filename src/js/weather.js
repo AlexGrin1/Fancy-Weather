@@ -11,20 +11,27 @@ const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
 const coordinates = document.querySelector(".coordinates");
 const refreshImage = document.getElementById("refreshImage");
 const variantsLanguage = document.querySelectorAll("option");
-let changeChoiceTemp;
-let changeTemp;
-let changeFeelsLikeTemp;
-let changeNextDayTemp;
+let userChoiceTemperatureUnit;
+let currentTempInCelsOrFahrenheit;
+let feelsLikeTempInCelsOrFahrenheit;
+let maxTempInCelsOrFahrenheit;
 
 function getActualTemp() {
-  changeChoiceTemp = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
+  userChoiceTemperatureUnit =
+    localStorage.getItem("temperature") ||
+    document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
-    if (el.dataset.value === changeChoiceTemp) el.classList.add("active");
+    if (el.dataset.value === userChoiceTemperatureUnit) {
+      el.classList.add("active");
+    }
   });
-  changeTemp = changeChoiceTemp === "c" ? "temp_c" : "temp_f";
-  changeFeelsLikeTemp = changeChoiceTemp === "c" ? "feelslike_c" : "feelslike_f";
-  changeNextDayTemp = changeChoiceTemp === "c" ? "maxtemp_c" : "maxtemp_f";
+  currentTempInCelsOrFahrenheit =
+    userChoiceTemperatureUnit === "c" ? "temp_c" : "temp_f";
+  feelsLikeTempInCelsOrFahrenheit =
+    userChoiceTemperatureUnit === "c" ? "feelslike_c" : "feelslike_f";
+  maxTempInCelsOrFahrenheit =
+    userChoiceTemperatureUnit === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
 export async function getWeather(city) {
@@ -60,7 +67,8 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -75,11 +83,15 @@ function createCurrentWeatherInfo(data) {
   const country = data.location.country;
   const iconCode = libary.icons.icon(data.current.condition.code);
   const weatherText = data.current.condition.text;
-  const feelsLikeInfo = Math.round(data.current[changeFeelsLikeTemp]);
+  const feelsLikeInfo = Math.round(
+    data.current[feelsLikeTempInCelsOrFahrenheit]
+  );
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
   const humidityInfo = data.current.humidity;
   location.textContent = `${city}, ${country}`;
-  temp.innerHTML = `${Math.round(data.current[changeTemp])}&#176`;
+  temp.innerHTML = `${Math.round(
+    data.current[currentTempInCelsOrFahrenheit]
+  )}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class="icon">
   <div class='info_element'>${weatherText}</div>
   <div class='info_element'>${libary[language].feel}: ${feelsLikeInfo} &#176</div>
@@ -90,7 +102,7 @@ function createCurrentWeatherInfo(data) {
 
 function createFutureWeatherInfo(data) {
   data.forecast.forecastday.forEach((el) => {
-    const celsOrFahrenheit = Math.round(el.day[changeNextDayTemp]);
+    const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
     const iconCode = libary.icons.icon(el.day.condition.code);
     const nextDayweatherBlock = document.createElement("div");
     nextDayweatherBlock.className = "blockDayWeather";
@@ -157,7 +169,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
+    if (
+      el.dataset.value.toUpperCase() ===
+      localStorage.getItem("language").toUpperCase()
+    ) {
       el.setAttribute("selected", "");
     }
   });
@@ -167,7 +182,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     onSearch();
   });
   blockChoiceTemp.addEventListener("click", (event) => {
-    if (changeChoiceTemp !== event.target.dataset.value) {
+    if (userChoiceTemperatureUnit !== event.target.dataset.value) {
       localStorage.setItem("temperature", event.target.dataset.value);
       getWeather(location.textContent);
     }

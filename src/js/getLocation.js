@@ -34,6 +34,7 @@ export const libary = {
     cloudy: [1009, 1135, 1147],
     clear: [1000],
     icon: (code) => {
+      console.log(code);
       if (libary.icons.codesOfLightRain.includes(code)) {
         return "./assets/1063.svg";
       }
@@ -56,12 +57,12 @@ export const libary = {
         return "./assets/1135.svg";
       }
       if (libary.icons.partyCloudy.includes(code)) {
-        return dayOrNight === "day" ? "./assets/cloudy-day-3.svg" : "./assets/cloudy-night-2.svg";
+        dayOrNight === "day" ? "./assets/1000.svg" : "./assets/clear.svg";
       }
       if (libary.icons.clear.includes(code)) {
-        return dayOrNight === "day" ? "./assets/1000.svg" : "./assets/clear.svg";
+        dayOrNight === "day" ? "./assets/1000.svg" : "./assets/clear.svg";
       } else {
-        return "./assets/1009.svg";
+        return "./assets/1135.svg";
       }
     },
   },
