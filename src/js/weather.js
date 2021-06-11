@@ -17,21 +17,16 @@ let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
 
 function getActualTemp() {
-  userChoiceTemperatureUnit =
-    localStorage.getItem("temperature") ||
-    document.querySelector(".active").dataset.value;
+  userChoiceTemperatureUnit = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
     if (el.dataset.value === userChoiceTemperatureUnit) {
       el.classList.add("active");
     }
   });
-  currentTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "temp_c" : "temp_f";
-  feelsLikeTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "feelslike_c" : "feelslike_f";
-  maxTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "maxtemp_c" : "maxtemp_f";
+  currentTempInCelsOrFahrenheit = userChoiceTemperatureUnit === "c" ? "temp_c" : "temp_f";
+  feelsLikeTempInCelsOrFahrenheit = userChoiceTemperatureUnit === "c" ? "feelslike_c" : "feelslike_f";
+  maxTempInCelsOrFahrenheit = userChoiceTemperatureUnit === "c" ? "maxtemp_c" : "maxtemp_f";
 }
 
 export async function getWeather(city) {
@@ -67,8 +62,7 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -83,15 +77,11 @@ function createCurrentWeatherInfo(data) {
   const country = data.location.country;
   const iconCode = libary.icons.icon(data.current.condition.code);
   const weatherText = data.current.condition.text;
-  const feelsLikeInfo = Math.round(
-    data.current[feelsLikeTempInCelsOrFahrenheit]
-  );
+  const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
   const humidityInfo = data.current.humidity;
   location.textContent = `${city}, ${country}`;
-  temp.innerHTML = `${Math.round(
-    data.current[currentTempInCelsOrFahrenheit]
-  )}&#176`;
+  temp.innerHTML = `${Math.round(data.current[currentTempInCelsOrFahrenheit])}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class="icon">
   <div class='info_element'>${weatherText}</div>
   <div class='info_element'>${libary[language].feel}: ${feelsLikeInfo} &#176</div>
@@ -169,10 +159,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (
-      el.dataset.value.toUpperCase() ===
-      localStorage.getItem("language").toUpperCase()
-    ) {
+    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
       el.setAttribute("selected", "");
     }
   });
