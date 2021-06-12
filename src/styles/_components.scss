@@ -105,7 +105,7 @@
   flex-direction: column;
   margin-bottom: 15px;
 }
-.weahter_info_title {
+.weather_info_title {
   display: flex;
   flex-direction: column;
   margin: 10px;
@@ -165,31 +165,32 @@
 form {
   display: flex;
 }
-
-input {
-  height: 30px;
-  color: white;
-  border: 2px solid $color_active;
-  background-color: rgba(136, 136, 136, 0.123);
-  border-radius: 5px 0 0 5px;
-  padding-left: 5px;
-  &::placeholder {
+#search_block {
+  & > input {
+    height: 30px;
     color: white;
+    border: 2px solid $color_active;
+    background-color: rgba(136, 136, 136, 0.123);
+    border-radius: 5px 0 0 5px;
+    padding-left: 5px;
+    &::placeholder {
+      color: white;
+    }
   }
-}
-form button {
-  height: 30px;
-  color: white;
-  border: none;
-  border-radius: 0 5px 5px 0;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: $color_active;
-  &:hover {
-    cursor: pointer;
-    transform: scale(0.97);
-    transition: 0.1s;
-    box-shadow: 0 0 10px black;
+  & > button {
+    height: 30px;
+    color: white;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: $color_active;
+    &:hover {
+      cursor: pointer;
+      transform: scale(0.97);
+      transition: 0.1s;
+      box-shadow: 0 0 10px black;
+    }
   }
 }
 .hide {

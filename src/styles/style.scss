@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 @import "constants";
-@import "base";
+@import "mixins";
 @import "components";
 
 * {
@@ -12,8 +12,10 @@
   font-family: "Roboto", sans-serif;
 }
 body {
-  background-color: rgba(100, 100, 100, 0.877);
+  background-color: rgba(0, 0, 0, 0.877);
   color: rgb(247, 241, 232);
+  background-size: cover !important;
+  background-attachment: fixed !important;
 }
 .header {
   display: flex;
@@ -33,9 +35,7 @@ body {
   max-width: 1100px;
   margin: 0 auto;
 }
-@media screen and (max-width: $desktop) {
-}
-@media screen and (max-width: $tablet) {
+@media screen and (max-width: 800px) {
   .header {
     padding-left: 10px;
     padding-right: 10px;
@@ -43,12 +43,11 @@ body {
   .wrapper {
     flex-direction: column;
   }
-  .map_container {
-    align-items: center;
-  }
+  .map_container,
   .weather_container {
     align-items: center;
   }
+
   .coordinates {
     text-align: center;
   }
@@ -59,7 +58,7 @@ body {
     font-size: $current_temp * 0.8;
   }
 }
-@media screen and (max-width: $mobile) {
+@media screen and (max-width: 400px) {
   .header {
     flex-direction: column;
     padding-top: 10px;

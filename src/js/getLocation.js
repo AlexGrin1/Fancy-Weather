@@ -1,4 +1,4 @@
-import { dayOrNight } from "./getTime.js";
+import { getTimesOfDay } from "./getTime.js";
 export const libary = {
   EN: {
     text: "",
@@ -26,13 +26,13 @@ export const libary = {
   icons: {
     codesOfLightRain: [1063, 1072, 1153, 1168, 1183, 1261, 1198],
     codesOfModerateRain: [1189, 1186, 1237],
-    heavyRainСodes: [1237, 164, 1246, 1195],
+    codesHeavyRain: [1237, 164, 1246, 1195],
     codesOfLightSnow: [1066, 1252, 1069, 1210],
     codesOfModerateSnow: [1201, 1216, 1204, 1219, 1255, 1237],
-    heavySnowСodes: [1114, 1222, 1225, 1258],
-    partyCloudy: [1003, 1006],
-    cloudy: [1009, 1135, 1147],
-    clear: [1000],
+    codesHeavySnow: [1114, 1222, 1225, 1258],
+    codesPartyCloudy: [1003, 1006],
+    codesCloudy: [1009, 1135, 1147],
+    codesClear: [1000],
     getIcon: (code) => {
       if (libary.icons.codesOfLightRain.includes(code)) {
         return "./assets/lightRain.svg";
@@ -40,7 +40,7 @@ export const libary = {
       if (libary.icons.codesOfModerateRain.includes(code)) {
         return "./assets/moderateRain.svg";
       }
-      if (libary.icons.heavyRainСodes.includes(code)) {
+      if (libary.icons.codesHeavyRain.includes(code)) {
         return "./assets/heavyRain.svg";
       }
       if (libary.icons.codesOfLightSnow.includes(code)) {
@@ -49,17 +49,17 @@ export const libary = {
       if (libary.icons.codesOfModerateSnow.includes(code)) {
         return "./assets/moderateSnow.svg";
       }
-      if (libary.icons.heavySnowСodes.includes(code)) {
+      if (libary.icons.codesHeavySnow.includes(code)) {
         return "./assets/heavySnow.svg";
       }
-      if (libary.icons.cloudy.includes(code)) {
+      if (libary.icons.codesCloudy.includes(code)) {
         return "./assets/cloudy.svg";
       }
-      if (libary.icons.partyCloudy.includes(code)) {
-        return dayOrNight() === "day" ? "./assets/cloudy-day-2.svg" : "./assets/cloudy-night-2.svg";
+      if (libary.icons.codesPartyCloudy.includes(code)) {
+        return getTimesOfDay() === "day" ? "./assets/cloudy-day-2.svg" : "./assets/cloudy-night-2.svg";
       }
-      if (libary.icons.clear.includes(code)) {
-        return dayOrNight() === "day" ? "./assets/sunny.svg" : "./assets/clear.svg";
+      if (libary.icons.codesClear.includes(code)) {
+        return getTimesOfDay() === "day" ? "./assets/sunny.svg" : "./assets/clear.svg";
       } else {
         return "./assets/cloudy.svg";
       }

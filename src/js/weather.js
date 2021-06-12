@@ -1,5 +1,5 @@
-import loc, { libary } from "./getLocation.js";
-import { showTime, language } from "./getTime.js";
+import { libary } from "./getLocation.js";
+import { language } from "./getTime.js";
 const location = document.getElementById("location");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
@@ -41,9 +41,6 @@ export async function getWeather(city) {
     const locationGeo = [data.location.lon, data.location.lat];
     timezone = data.location.tz_id;
     createWeatherInfo(data);
-    if (inputCity !== city) {
-      getRandomImage();
-    }
     getMaps(locationGeo);
   } catch (err) {
     alert("Что-то пошло не так");
@@ -89,27 +86,26 @@ function createCurrentWeatherInfo(data) {
   <div class='info_element'>${libary[language].humidity}: ${humidityInfo}%</div>
   `;
 }
-
 function createFutureWeatherInfo(data) {
+  weatherOn3Days.innerHtml = "";
   data.forecast.forecastday.forEach((el) => {
     const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
     const iconCode = libary.icons.getIcon(el.day.condition.code);
-    const nextDayweatherBlock = document.createElement("div");
-    nextDayweatherBlock.className = "blockDayWeather";
-    nextDayweatherBlock.innerHTML = `
-    <div class="weekDayNext>
-      <div class="week_day">${new Date(el.date).toLocaleString(language, {
-        weekday: "long",
-      })}
+    const weekDay = new Date(el.date).toLocaleString(language, { weekday: "long" });
+    weatherOn3Days.innerHTML += `
+    <div class="blockDayWeather">
+      <div class="weekDayNext>
+        <div class="week_day">${weekDay}</div>
+      
+      <div class='weekDayWeather'>
+        <div class="next_day_weather">${celsOrFahrenheit}&#176</div>
+        <img src='${iconCode}'>
       </div>
-    </div>
-    <div class='weekDayWeather'>
-      <div class="next_day_weather">${celsOrFahrenheit}&#176</div>
-       <img src='${iconCode}'>
+      </div>
     </div>`;
-    weatherOn3Days.appendChild(nextDayweatherBlock);
   });
 }
+
 function createWeatherInfo(data) {
   cleanOldInfo();
   getActualTemp();
@@ -137,6 +133,7 @@ function cleanOldInfo() {
 
 function onSearch() {
   getWeather(inputCity.value);
+  getRandomImage();
   inputCity.value = "";
 }
 
@@ -146,16 +143,14 @@ async function getRandomImage() {
       `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
     );
     const data = await response.json();
-    document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% / cover, url(${data.urls.full}), no-repeat`;
-    document.body.style.backgroundImage = `url(${data.urls.full})`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundAttachment = "fixed";
+    document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% , url(${data.urls.full}), no-repeat`;
   } catch (err) {
     alert("Ошибка загрузки фонового изображения");
   }
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
+  getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
