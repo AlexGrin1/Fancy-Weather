@@ -9,7 +9,7 @@ const currentLocation = document.getElementById("location");
 export let language = localStorage.getItem("language") || "EN";
 
 export function dayOrNight(hour) {
-  if (21 < hour < 23 || 0 < hour < 5) {
+  if ((hour > 21 && hour < 23) || (hour > 0 && hour < 5)) {
     return "night";
   } else {
     return "day";

@@ -33,7 +33,7 @@ export const libary = {
     partyCloudy: [1003, 1006],
     cloudy: [1009, 1135, 1147],
     clear: [1000],
-    icon: (code) => {
+    getIcon: (code) => {
       if (libary.icons.codesOfLightRain.includes(code)) {
         return "./assets/lightRain.svg";
       }

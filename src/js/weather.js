@@ -75,7 +75,7 @@ function getMaps(coordinates) {
 function createCurrentWeatherInfo(data) {
   const city = data.location.name;
   const country = data.location.country;
-  const iconCode = libary.icons.icon(data.current.condition.code);
+  const iconCode = libary.icons.getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
   const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
@@ -93,7 +93,7 @@ function createCurrentWeatherInfo(data) {
 function createFutureWeatherInfo(data) {
   data.forecast.forecastday.forEach((el) => {
     const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
-    const iconCode = libary.icons.icon(el.day.condition.code);
+    const iconCode = libary.icons.getIcon(el.day.condition.code);
     const nextDayweatherBlock = document.createElement("div");
     nextDayweatherBlock.className = "blockDayWeather";
     nextDayweatherBlock.innerHTML = `
