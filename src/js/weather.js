@@ -1,4 +1,4 @@
-import { libary } from "./getLocation.js";
+import { projectSettings } from "./projectSettings.js";
 import { language } from "./getTime.js";
 const location = document.getElementById("location");
 const temp = document.getElementById("temp");
@@ -39,7 +39,7 @@ export async function getWeather(city) {
       alert("Город не найден. Попробуйте заново");
     }
     const locationGeo = [data.location.lon, data.location.lat];
-    timezone = data.location.tz_id;
+    timeZone = data.location.tz_id;
     createWeatherInfo(data);
     getMaps(locationGeo);
   } catch (err) {
@@ -47,12 +47,12 @@ export async function getWeather(city) {
     userLocation();
   }
 }
-export let timezone = "Europe/Minsk";
+export let timeZone = "Europe/Minsk";
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
-    timezone = resp.timezone;
+    timeZone = resp.timezone;
     getWeather(resp.city);
   } catch (err) {
     alert("Что-то пошло не так");
@@ -72,7 +72,7 @@ function getMaps(coordinates) {
 function createCurrentWeatherInfo(data) {
   const city = data.location.name;
   const country = data.location.country;
-  const iconCode = libary.icons.getIcon(data.current.condition.code);
+  const iconCode = projectSettings.icons.getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
   const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
@@ -81,16 +81,16 @@ function createCurrentWeatherInfo(data) {
   temp.innerHTML = `${Math.round(data.current[currentTempInCelsOrFahrenheit])}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class="icon">
   <div class='info_element'>${weatherText}</div>
-  <div class='info_element'>${libary[language].feel}: ${feelsLikeInfo} &#176</div>
-  <div class='info_element'>${libary[language].wind}: ${windInfo} ${libary[language].speed}</div>
-  <div class='info_element'>${libary[language].humidity}: ${humidityInfo}%</div>
+  <div class='info_element'>${projectSettings[language].feel}: ${feelsLikeInfo} &#176</div>
+  <div class='info_element'>${projectSettings[language].wind}: ${windInfo} ${projectSettings[language].speed}</div>
+  <div class='info_element'>${projectSettings[language].humidity}: ${humidityInfo}%</div>
   `;
 }
 function createFutureWeatherInfo(data) {
   weatherOn3Days.innerHtml = "";
   data.forecast.forecastday.forEach((el) => {
     const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
-    const iconCode = libary.icons.getIcon(el.day.condition.code);
+    const iconCode = projectSettings.icons.getIcon(el.day.condition.code);
     const weekDay = new Date(el.date).toLocaleString(language, { weekday: "long" });
     weatherOn3Days.innerHTML += `
     <div class="blockDayWeather">
@@ -118,8 +118,8 @@ function createCoordinate(data) {
   const latitude = String(data.location.lat).split(".");
   const longitude = String(data.location.lon).split(".");
   coordinates.innerHTML = `
-  <div>${libary[language].latitude}: ${latitude[0]}&#176 ${latitude[1]}'</div>
-  <div>${libary[language].longitude}: ${longitude[0]}&#176 ${longitude[1]}'</div>
+  <div>${projectSettings[language].latitude}: ${latitude[0]}&#176 ${latitude[1]}'</div>
+  <div>${projectSettings[language].longitude}: ${longitude[0]}&#176 ${longitude[1]}'</div>
   `;
 }
 
