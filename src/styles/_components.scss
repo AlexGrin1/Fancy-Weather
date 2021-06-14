@@ -23,71 +23,72 @@
   text-align: end;
   margin-top: 20px;
 }
-#buttons_block,
-#refreshAndLang {
+#buttons_block {
   @include flex_center;
   margin: 7px;
 }
-
+#refreshAndLang {
+  @include flex_center;
+  margin: 7px;
+  & > #choice_lang {
+    width: 45px;
+    height: 30px;
+    border: none;
+    background-color: $color_active;
+    color: white;
+    border-radius: 5px;
+    &:hover {
+      cursor: pointer;
+      transform: scale(0.97);
+      transition: 0.1s;
+      box-shadow: 0 0 10px black;
+    }
+  }
+  & > #refreshImage {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: $color_active;
+    background-image: url("https://www.freeiconspng.com/thumbs/refresh-icon/refresh-icon-png-2.png");
+    background-size: 23px 23px;
+    background-repeat: no-repeat;
+    background-position: center;
+    &:hover {
+      box-shadow: 0 0 10px black;
+      cursor: pointer;
+      transition: 0.1s;
+      filter: brightness(100);
+    }
+  }
+}
 #choice_temp {
   margin: 7px;
-}
-.cels,
-.fahrenheit {
-  opacity: 0.7;
-  width: 35px;
-  height: 30px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  background-color: rgba(228, 228, 228, 0.123);
-  &:hover {
-    cursor: pointer;
-    background-color: $color_active;
-    transform: scale(0.97);
-    transition: 0.1s;
-    box-shadow: 0 0 10px black;
+  & > .cels,
+  .fahrenheit {
+    opacity: 0.7;
+    width: 35px;
+    height: 30px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(228, 228, 228, 0.123);
+    &:hover {
+      cursor: pointer;
+      background-color: $color_active;
+      transform: scale(0.97);
+      transition: 0.1s;
+      box-shadow: 0 0 10px black;
+    }
   }
 }
 .active {
   opacity: 1;
   background-color: $color_active;
 }
-#choice_lang {
-  width: 45px;
-  height: 30px;
-  border: none;
-  background-color: $color_active;
-  color: white;
-  border-radius: 5px;
-  &:hover {
-    cursor: pointer;
-    transform: scale(0.97);
-    transition: 0.1s;
-    box-shadow: 0 0 10px black;
-  }
-}
-#refreshImage {
-  width: 30px;
-  height: 30px;
-  position: relative;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: $color_active;
-  background-image: url("https://www.freeiconspng.com/thumbs/refresh-icon/refresh-icon-png-2.png");
-  background-size: 23px 23px;
-  background-repeat: no-repeat;
-  background-position: center;
-  &:hover {
-    box-shadow: 0 0 10px black;
-    cursor: pointer;
-    transition: 0.1s;
-    filter: brightness(100);
-  }
-}
-
 #map {
   overflow: hidden;
   position: relative;
@@ -145,7 +146,6 @@
   width: 100px;
   opacity: 0.9;
 }
-
 .weatherOn3Days {
   display: flex;
   font-weight: bold;
@@ -156,7 +156,6 @@
   margin: 10px;
   font-size: $title_text;
 }
-
 .blockDayWeather {
   display: flex;
   flex-direction: column;
