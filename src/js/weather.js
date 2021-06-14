@@ -15,26 +15,20 @@ let userChoiceTemperatureUnit;
 let currentTempInCelsOrFahrenheit;
 let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
-
 function getActualTemp() {
-  userChoiceTemperatureUnit =
-    localStorage.getItem("temperature") ||
-    document.querySelector(".active").dataset.value;
+  userChoiceTemperatureUnit = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
     if (el.dataset.value === userChoiceTemperatureUnit) {
       el.classList.add("active");
     }
   });
-  currentTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "temp_c" : "temp_f";
-  feelsLikeTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "feelslike_c" : "feelslike_f";
-  maxTempInCelsOrFahrenheit =
-    userChoiceTemperatureUnit === "c" ? "maxtemp_c" : "maxtemp_f";
+  currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
+  feelsLikeTempInCelsOrFahrenheit = `feelslike_${userChoiceTemperatureUnit}`;
+  maxTempInCelsOrFahrenheit = `maxtemp_${userChoiceTemperatureUnit}`;
 }
 
-export async function getWeather(city) {
+export async function getWeather(city, isTrue) {
   try {
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`
@@ -53,6 +47,7 @@ export async function getWeather(city) {
   }
 }
 export let timeZone = "Europe/Minsk";
+
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
@@ -64,8 +59,7 @@ async function userLocation() {
   }
 }
 function getMaps(coordinates) {
-  mapboxgl.accessToken =
-    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   var map = new mapboxgl.Map({
     container: "map",
     center: coordinates,
@@ -74,21 +68,28 @@ function getMaps(coordinates) {
     style: "mapbox://styles/mapbox/streets-v11",
   });
 }
+function flyTo(coordinates) {
+  map.flyTo({
+    center: coordinates,
+    zoom: 9,
+    speed: 0.2,
+    curve: 1,
+    easing(t) {
+      return t;
+    },
+  });
+}
 
 function createCurrentWeatherInfo(data) {
   const city = data.location.name;
   const country = data.location.country;
   const iconCode = projectSettings.icons.getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
-  const feelsLikeInfo = Math.round(
-    data.current[feelsLikeTempInCelsOrFahrenheit]
-  );
+  const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
   const humidityInfo = data.current.humidity;
   location.textContent = `${city}, ${country}`;
-  temp.innerHTML = `${Math.round(
-    data.current[currentTempInCelsOrFahrenheit]
-  )}&#176`;
+  temp.innerHTML = `${Math.round(data.current[currentTempInCelsOrFahrenheit])}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class="icon">
   <div class='info_element'>${weatherText}</div>
   <div class='info_element'>${projectSettings[language].feel}: ${feelsLikeInfo} &#176</div>
@@ -127,11 +128,10 @@ function createWeatherInfo(data) {
 }
 
 function createCoordinate(data) {
-  const latitude = String(data.location.lat).split(".");
-  const longitude = String(data.location.lon).split(".");
+  const getCoordinateString = (str) => `${str.replace(".", "&#176 ")} '`;
   coordinates.innerHTML = `
-  <div>${projectSettings[language].latitude}: ${latitude[0]}&#176 ${latitude[1]}'</div>
-  <div>${projectSettings[language].longitude}: ${longitude[0]}&#176 ${longitude[1]}'</div>
+  <div>${projectSettings[language].latitude}: ${getCoordinateString(String(data.location.lat))}'</div>
+  <div>${projectSettings[language].longitude}: ${getCoordinateString(String(data.location.lat))}'</div>
   `;
 }
 
@@ -166,10 +166,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (
-      el.dataset.value.toUpperCase() ===
-      localStorage.getItem("language").toUpperCase()
-    ) {
+    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
       el.setAttribute("selected", "");
     }
   });

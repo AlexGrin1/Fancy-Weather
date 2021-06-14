@@ -1,4 +1,4 @@
-import { getTimesOfDay } from "./getTime.js";
+import { getTimesOfDay } from "./getTimeOfDay.js";
 export const projectSettings = {
   EN: {
     feel: "FEELS LIKE",
@@ -7,7 +7,7 @@ export const projectSettings = {
     humidity: "HUMIDITY",
     search: "SEARCH",
     placeholder: "Search city",
-    latitude: "Latutude",
+    latitude: "Latitude",
     longitude: "Longitude",
     errorFindCity: "The city was not found. Try again",
     errorImages: "Error loading background image",

@@ -67,24 +67,25 @@
 }
 #choice_temp {
   margin: 7px;
-  & > .cels,
-  .fahrenheit {
-    opacity: 0.7;
-    width: 35px;
-    height: 30px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    background-color: rgba(228, 228, 228, 0.123);
-    &:hover {
-      cursor: pointer;
-      background-color: $color_active;
-      transform: scale(0.97);
-      transition: 0.1s;
-      box-shadow: 0 0 10px black;
-    }
+}
+.cels,
+.fahrenheit {
+  opacity: 0.7;
+  width: 35px;
+  height: 30px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(228, 228, 228, 0.123);
+  &:hover {
+    cursor: pointer;
+    background-color: $color_active;
+    transform: scale(0.97);
+    transition: 0.1s;
+    box-shadow: 0 0 10px black;
   }
 }
+
 .active {
   opacity: 1;
   background-color: $color_active;

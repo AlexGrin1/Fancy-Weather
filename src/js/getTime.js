@@ -8,10 +8,6 @@ const input = document.querySelector("input");
 const currentLocation = document.getElementById("location");
 export let language = localStorage.getItem("language") || "EN";
 
-export function getTimesOfDay(hour = new Date().getHours()) {
-  return (hour >= 21 && hour < 24) || (hour >= 0 && hour < 5) ? "night" : "day";
-}
-
 function showDate() {
   const today = new Date();
   const day = today.toLocaleString(language, { weekday: "short" });
