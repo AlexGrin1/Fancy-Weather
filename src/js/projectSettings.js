@@ -28,7 +28,6 @@ export const projectSettings = {
   },
   icons: {
     getIcon: (code) => {
-      console.log(code);
       const iconCodes = {
         lightRain: [1063, 1072, 1153, 1168, 1183, 1240, 1261, 1198],
         moderateRain: [1189, 1186, 1237],

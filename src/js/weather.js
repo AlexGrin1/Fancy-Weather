@@ -1,6 +1,7 @@
 import { projectSettings } from "./projectSettings.js";
 import { language } from "./getTime.js";
 const location = document.getElementById("location");
+// const map = document.getElementById("#map");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
 const weatherOn3Days = document.querySelector(".weatherOn3Days");
@@ -15,8 +16,11 @@ let userChoiceTemperatureUnit;
 let currentTempInCelsOrFahrenheit;
 let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
+let map;
 function getActualTemp() {
-  userChoiceTemperatureUnit = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
+  userChoiceTemperatureUnit =
+    localStorage.getItem("temperature") ||
+    document.querySelector(".active").dataset.value;
   buttonsTemp.forEach((el) => {
     el.classList.remove("active");
     if (el.dataset.value === userChoiceTemperatureUnit) {
@@ -26,6 +30,18 @@ function getActualTemp() {
   currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
   feelsLikeTempInCelsOrFahrenheit = `feelslike_${userChoiceTemperatureUnit}`;
   maxTempInCelsOrFahrenheit = `maxtemp_${userChoiceTemperatureUnit}`;
+}
+
+function getMaps(coordinates) {
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+  map = new mapboxgl.Map({
+    container: "map",
+    center: coordinates,
+    zoom: 9,
+    interactive: false,
+    style: "mapbox://styles/mapbox/streets-v11",
+  });
 }
 
 export async function getWeather(city, isTrue) {
@@ -40,44 +56,30 @@ export async function getWeather(city, isTrue) {
     const locationGeo = [data.location.lon, data.location.lat];
     timeZone = data.location.tz_id;
     createWeatherInfo(data);
-    getMaps(locationGeo);
+    flyTo(locationGeo);
   } catch (err) {
     alert(projectSettings[language].errorOther);
     userLocation();
   }
 }
+function flyTo(coord) {
+  map.flyTo({
+    center: coord,
+    essential: true,
+  });
+}
 export let timeZone = "Europe/Minsk";
-
 async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     timeZone = resp.timezone;
+
+    getMaps(resp.loc.split(",").reverse());
     getWeather(resp.city);
   } catch (err) {
     alert(projectSettings[language].errorOther);
   }
-}
-function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
-  var map = new mapboxgl.Map({
-    container: "map",
-    center: coordinates,
-    zoom: 9,
-    interactive: false,
-    style: "mapbox://styles/mapbox/streets-v11",
-  });
-}
-function flyTo(coordinates) {
-  map.flyTo({
-    center: coordinates,
-    zoom: 9,
-    speed: 0.2,
-    curve: 1,
-    easing(t) {
-      return t;
-    },
-  });
 }
 
 function createCurrentWeatherInfo(data) {
@@ -85,11 +87,15 @@ function createCurrentWeatherInfo(data) {
   const country = data.location.country;
   const iconCode = projectSettings.icons.getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
-  const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
+  const feelsLikeInfo = Math.round(
+    data.current[feelsLikeTempInCelsOrFahrenheit]
+  );
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
   const humidityInfo = data.current.humidity;
   location.textContent = `${city}, ${country}`;
-  temp.innerHTML = `${Math.round(data.current[currentTempInCelsOrFahrenheit])}&#176`;
+  temp.innerHTML = `${Math.round(
+    data.current[currentTempInCelsOrFahrenheit]
+  )}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class="icon">
   <div class='info_element'>${weatherText}</div>
   <div class='info_element'>${projectSettings[language].feel}: ${feelsLikeInfo} &#176</div>
@@ -130,8 +136,12 @@ function createWeatherInfo(data) {
 function createCoordinate(data) {
   const getCoordinateString = (str) => `${str.replace(".", "&#176 ")} '`;
   coordinates.innerHTML = `
-  <div>${projectSettings[language].latitude}: ${getCoordinateString(String(data.location.lat))}'</div>
-  <div>${projectSettings[language].longitude}: ${getCoordinateString(String(data.location.lat))}'</div>
+  <div>${projectSettings[language].latitude}: ${getCoordinateString(
+    String(data.location.lat)
+  )}'</div>
+  <div>${projectSettings[language].longitude}: ${getCoordinateString(
+    String(data.location.lon)
+  )}'</div>
   `;
 }
 
@@ -145,7 +155,7 @@ function cleanOldInfo() {
 
 function onSearch() {
   getWeather(inputCity.value);
-  getRandomImage();
+  // getRandomImage();
   inputCity.value = "";
 }
 
@@ -162,11 +172,14 @@ async function getRandomImage() {
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
-  getRandomImage();
+  // getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (el.dataset.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
+    if (
+      el.dataset.value.toUpperCase() ===
+      localStorage.getItem("language").toUpperCase()
+    ) {
       el.setAttribute("selected", "");
     }
   });
