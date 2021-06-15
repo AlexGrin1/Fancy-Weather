@@ -74,7 +74,6 @@ async function userLocation() {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
     timeZone = resp.timezone;
-
     getMaps(resp.loc.split(",").reverse());
     getWeather(resp.city);
   } catch (err) {
@@ -175,6 +174,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   // getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
+    console.log(el);
     el.removeAttribute("selected");
     if (
       el.dataset.value.toUpperCase() ===
