@@ -1,11 +1,9 @@
-import { projectSettings } from "./projectSettings.js";
-import { language } from "./getTime.js";
-const location = document.getElementById("location");
-// const map = document.getElementById("#map");
+import { projectSettings, getIcon } from "./projectSettings.js";
+import { language, changeLanguage } from "./languageUtil.js";
+export const location = document.getElementById("location");
 const temp = document.getElementById("temp");
 const innerInfo = document.querySelector(".innerInfo");
-const weatherOn3Days = document.querySelector(".weatherOn3Days");
-const inputCity = document.querySelector("input");
+
 const form = document.querySelector("form");
 const blockChoiceTemp = document.querySelector("#choice_temp");
 const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
@@ -44,7 +42,7 @@ function getMaps(coordinates) {
   });
 }
 
-export async function getWeather(city, isTrue) {
+export async function getWeather(city) {
   try {
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`
@@ -84,7 +82,7 @@ async function userLocation() {
 function createCurrentWeatherInfo(data) {
   const city = data.location.name;
   const country = data.location.country;
-  const iconCode = projectSettings.icons.getIcon(data.current.condition.code);
+  const iconCode = getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
   const feelsLikeInfo = Math.round(
     data.current[feelsLikeTempInCelsOrFahrenheit]
@@ -103,10 +101,11 @@ function createCurrentWeatherInfo(data) {
   `;
 }
 function createFutureWeatherInfo(data) {
+  const weatherOn3Days = document.querySelector(".weatherOn3Days");
   weatherOn3Days.innerHtml = "";
   data.forecast.forecastday.forEach((el) => {
     const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
-    const iconCode = projectSettings.icons.getIcon(el.day.condition.code);
+    const iconCode = getIcon(el.day.condition.code);
     const weekDay = new Date(el.date).toLocaleString(language, {
       weekday: "long",
     });
@@ -145,6 +144,7 @@ function createCoordinate(data) {
 }
 
 function cleanOldInfo() {
+  const weatherOn3Days = document.querySelector(".weatherOn3Days");
   location.innerHTML = "";
   temp.innerHTML = "";
   innerInfo.innerHTML = "";
@@ -153,6 +153,7 @@ function cleanOldInfo() {
 }
 
 function onSearch() {
+  const inputCity = document.querySelector("input");
   getWeather(inputCity.value);
   // getRandomImage();
   inputCity.value = "";
@@ -169,16 +170,13 @@ async function getRandomImage() {
     alert(projectSettings[language].errorImages);
   }
 }
-
 document.addEventListener("DOMContentLoaded", (event) => {
   // getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
-    console.log(el);
     el.removeAttribute("selected");
     if (
-      el.dataset.value.toUpperCase() ===
-      localStorage.getItem("language").toUpperCase()
+      el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()
     ) {
       el.setAttribute("selected", "");
     }
