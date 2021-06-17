@@ -1,36 +1,20 @@
 import { projectSettings, getIcon } from "./projectSettings.js";
 import { language, changeLanguage } from "./languageUtil.js";
 export const location = document.getElementById("location");
-const temp = document.getElementById("temp");
-const innerInfo = document.querySelector(".innerInfo");
+export const temp = document.getElementById("temp");
+export const innerInfo = document.querySelector(".innerInfo");
+export const inputCity = document.querySelector("input");
+export const blockChoiceTemp = document.querySelector("#choice_temp");
+export const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
+export const coordinates = document.querySelector(".coordinates");
 
-const form = document.querySelector("form");
-const blockChoiceTemp = document.querySelector("#choice_temp");
-const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
-const coordinates = document.querySelector(".coordinates");
-const refreshImage = document.getElementById("refreshImage");
-const variantsLanguage = document.querySelectorAll("option");
-let userChoiceTemperatureUnit;
+export let userChoiceTemperatureUnit;
 let currentTempInCelsOrFahrenheit;
 let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
 let map;
-function getActualTemp() {
-  userChoiceTemperatureUnit =
-    localStorage.getItem("temperature") ||
-    document.querySelector(".active").dataset.value;
-  buttonsTemp.forEach((el) => {
-    el.classList.remove("active");
-    if (el.dataset.value === userChoiceTemperatureUnit) {
-      el.classList.add("active");
-    }
-  });
-  currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
-  feelsLikeTempInCelsOrFahrenheit = `feelslike_${userChoiceTemperatureUnit}`;
-  maxTempInCelsOrFahrenheit = `maxtemp_${userChoiceTemperatureUnit}`;
-}
 
-function getMaps(coordinates) {
+export function getMaps(coordinates) {
   mapboxgl.accessToken =
     "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
   map = new mapboxgl.Map({
@@ -67,7 +51,7 @@ function flyTo(coord) {
   });
 }
 export let timeZone = "Europe/Minsk";
-async function userLocation() {
+export async function userLocation() {
   try {
     const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
     const resp = await response.json();
@@ -124,8 +108,19 @@ function createFutureWeatherInfo(data) {
 }
 
 function createWeatherInfo(data) {
+  userChoiceTemperatureUnit =
+    localStorage.getItem("temperature") ||
+    document.querySelector(".active").dataset.value;
+  buttonsTemp.forEach((el) => {
+    el.classList.remove("active");
+    if (el.dataset.value === userChoiceTemperatureUnit) {
+      el.classList.add("active");
+    }
+  });
+  currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
+  feelsLikeTempInCelsOrFahrenheit = `feelslike_${userChoiceTemperatureUnit}`;
+  maxTempInCelsOrFahrenheit = `maxtemp_${userChoiceTemperatureUnit}`;
   cleanOldInfo();
-  getActualTemp();
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
   createCoordinate(data);
@@ -152,14 +147,13 @@ function cleanOldInfo() {
   coordinates.innerHTML = "";
 }
 
-function onSearch() {
-  const inputCity = document.querySelector("input");
+export function onSearch() {
   getWeather(inputCity.value);
   // getRandomImage();
   inputCity.value = "";
 }
 
-async function getRandomImage() {
+export async function getRandomImage() {
   try {
     const response = await fetch(
       `https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8`
@@ -170,29 +164,3 @@ async function getRandomImage() {
     alert(projectSettings[language].errorImages);
   }
 }
-document.addEventListener("DOMContentLoaded", (event) => {
-  // getRandomImage();
-  userLocation();
-  variantsLanguage.forEach((el) => {
-    el.removeAttribute("selected");
-    if (
-      el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()
-    ) {
-      el.setAttribute("selected", "");
-    }
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    onSearch();
-  });
-  blockChoiceTemp.addEventListener("click", (event) => {
-    if (userChoiceTemperatureUnit !== event.target.dataset.value) {
-      localStorage.setItem("temperature", event.target.dataset.value);
-      getWeather(location.textContent);
-    }
-  });
-  refreshImage.addEventListener("click", (event) => {
-    getRandomImage();
-  });
-});

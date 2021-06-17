@@ -1,4 +1,4 @@
-import { getTimesOfDay } from "./getTimeOfDay.js";
+import { getTimesOfDay } from "./timeUtils.js";
 export const projectSettings = {
   en: {
     feel: "FEELS LIKE",

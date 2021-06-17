@@ -1,10 +1,52 @@
 import "../styles/style.scss";
 
-import weather from "./weather.js";
-import projectSettings from "./projectSettings.js";
-import { showDate, showTime } from "./timeUtils.js";
+import {
+  location,
+  userLocation,
+  blockChoiceTemp,
+  userChoiceTemperatureUnit,
+  getWeather,
+  onSearch,
+  getRandomImage,
+} from "./weather.js";
+import { showDateAndTime } from "./timeUtils.js";
+import { lang, changeLanguage, currentLocation } from "./languageUtil.js";
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  const refreshImage = document.getElementById("refreshImage");
+  const variantsLanguage = document.querySelectorAll("option");
+  const form = document.querySelector("form");
+  //getRandomImage();
+  userLocation();
+  variantsLanguage.forEach((el) => {
+    el.removeAttribute("selected");
+    if (
+      el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()
+    ) {
+      el.setAttribute("selected", "");
+    }
+  });
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    onSearch();
+  });
+  blockChoiceTemp.addEventListener("click", (event) => {
+    if (userChoiceTemperatureUnit !== event.target.dataset.value) {
+      localStorage.setItem("temperature", event.target.dataset.value);
+      getWeather(location.textContent);
+    }
+  });
+  refreshImage.addEventListener("click", (event) => {
+    getRandomImage();
+  });
+
+  lang.addEventListener("change", (event) => {
+    changeLanguage(event.target.value);
+    getWeather(currentLocation.textContent);
+  });
+});
 
 setInterval(() => {
-  showDate();
-  showTime();
+  showDateAndTime();
 }, 1000);
