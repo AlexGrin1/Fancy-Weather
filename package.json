@@ -46,9 +46,9 @@
   },
   "lint-staged": {
     "*.{js}": [
-      "node_modules/.bin/eslint --max-warnings=0",
+      "npm run eslint",
       "prettier --write",
-      "git add"
+      "git add ."
     ]
   },
   "dependencies": {}
