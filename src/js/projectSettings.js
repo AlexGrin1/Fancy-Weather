@@ -1,30 +1,30 @@
-import { getTimesOfDay } from "./timeUtils.js";
+import { getTimesOfDay } from './timeUtils.js';
 export const projectSettings = {
   en: {
-    feel: "FEELS LIKE",
-    wind: "WIND",
-    speed: "m/s",
-    humidity: "HUMIDITY",
-    search: "SEARCH",
-    placeholder: "Search city",
-    latitude: "Latitude",
-    longitude: "Longitude",
-    errorFindCity: "The city was not found. Try again",
-    errorImages: "Error loading background image",
-    errorOther: "Something went wrong",
+    feel: 'FEELS LIKE',
+    wind: 'WIND',
+    speed: 'm/s',
+    humidity: 'HUMIDITY',
+    search: 'SEARCH',
+    placeholder: 'Search city',
+    latitude: 'Latitude',
+    longitude: 'Longitude',
+    errorFindCity: 'The city was not found. Try again',
+    errorImages: 'Error loading background image',
+    errorOther: 'Something went wrong',
   },
   ru: {
-    feel: "ОЩУЩАЕТСЯ КАК",
-    wind: "ВЕТЕР",
-    speed: "м/с",
-    humidity: "ВЛАЖНОСТЬ",
-    search: "ПОИСК",
-    placeholder: "Искать город",
-    latitude: "Широта",
-    longitude: "Долгота",
-    errorFindCity: "Город не найден. Попробуйте заново",
-    errorImages: "Ошибка загрузки фонового изображения",
-    errorOther: "Что-то пошло не так",
+    feel: 'ОЩУЩАЕТСЯ КАК',
+    wind: 'ВЕТЕР',
+    speed: 'м/с',
+    humidity: 'ВЛАЖНОСТЬ',
+    search: 'ПОИСК',
+    placeholder: 'Искать город',
+    latitude: 'Широта',
+    longitude: 'Долгота',
+    errorFindCity: 'Город не найден. Попробуйте заново',
+    errorImages: 'Ошибка загрузки фонового изображения',
+    errorOther: 'Что-то пошло не так',
   },
 };
 export function getIcon(code) {
@@ -41,7 +41,7 @@ export function getIcon(code) {
   };
   for (const [key, value] of Object.entries(iconCodes)) {
     if (value.includes(code)) {
-      if (key === "partlyCloudy" || key === "clear") {
+      if (key === 'partlyCloudy' || key === 'clear') {
         return `./assets/${key}${getTimesOfDay()}.svg`;
       } else {
         return `./assets/${key}.svg`;

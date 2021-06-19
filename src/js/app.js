@@ -12,7 +12,7 @@ import {
 import { showDateAndTime } from "./timeUtils.js";
 import { lang, changeLanguage, currentLocation } from "./languageUtil.js";
 
-document.addEventListener("DOMContentLoaded", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
   const refreshImage = document.getElementById("refreshImage");
   const variantsLanguage = document.querySelectorAll("option");
   const form = document.querySelector("form");
@@ -20,9 +20,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute("selected");
-    if (
-      el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()
-    ) {
+    if (el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()) {
       el.setAttribute("selected", "");
     }
   });
@@ -37,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       getWeather(location.textContent);
     }
   });
-  refreshImage.addEventListener("click", (event) => {
+  refreshImage.addEventListener("click", () => {
     getRandomImage();
   });
 
