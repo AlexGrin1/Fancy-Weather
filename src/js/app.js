@@ -49,6 +49,5 @@ setInterval(() => {
   showDateAndTime();
 }, 1000);
 
-const br;
-let ddf
-const sdfs
+const precommit
+adfa
