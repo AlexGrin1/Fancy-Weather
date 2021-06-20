@@ -8,7 +8,6 @@
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
-    "pre-commit": "lint-staged",
     "lint:fix": "eslint --debug src/ --fix",
     "eslint": "node_modules/.bin/eslint src/",
     "prettier": "prettier --write src/**/*.{js,scss}",
