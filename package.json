@@ -9,14 +9,11 @@
     "build": "webpack --mode production",
     "watch": "webpack --mode development --watch",
     "pre-commit": "lint-staged",
-    "lint:write": "eslint --debug src/ --fix",
+    "lint:fix": "eslint --debug src/ --fix",
     "eslint": "node_modules/.bin/eslint src/",
-    "prettier": "prettier --write src/**/*.{js,css}"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "prettier": "prettier --write src/**/*.{js,scss}",
+    "lint:eslint": "eslint src/",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.(js|jsx)": ["npm run lint:write", "git add"]

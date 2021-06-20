@@ -1,4 +1,7 @@
-import { getTimesOfDay } from './timeUtils.js';
+/* eslint-disable no-restricted-syntax */
+// eslint-disable-next-line import/no-cycle
+import { getTimesOfDay } from './timeUtils';
+
 export const projectSettings = {
   en: {
     feel: 'FEELS LIKE',
@@ -43,9 +46,8 @@ export function getIcon(code) {
     if (value.includes(code)) {
       if (key === 'partlyCloudy' || key === 'clear') {
         return `./assets/${key}${getTimesOfDay()}.svg`;
-      } else {
-        return `./assets/${key}.svg`;
       }
+      return `./assets/${key}.svg`;
     }
   }
 }

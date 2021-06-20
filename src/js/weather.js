@@ -1,26 +1,31 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-undef */
-import { projectSettings, getIcon } from "./projectSettings.js";
-import { language } from "./languageUtil.js";
-export const location = document.getElementById("location");
-export const temp = document.getElementById("temp");
-export const innerInfo = document.querySelector(".innerInfo");
-export const inputCity = document.querySelector("input");
-export const blockChoiceTemp = document.querySelector("#choice_temp");
-export const buttonsTemp = blockChoiceTemp.querySelectorAll("button");
-export const coordinates = document.querySelector(".coordinates");
+import { projectSettings, getIcon } from './projectSettings';
+import { language } from './languageUtil';
+
+export const location = document.getElementById('location');
+export const temp = document.getElementById('temp');
+export const innerInfo = document.querySelector('.innerInfo');
+export const inputCity = document.querySelector('input');
+export const blockChoiceTemp = document.querySelector('#choice_temp');
+export const buttonsTemp = blockChoiceTemp.querySelectorAll('button');
+export const coordinates = document.querySelector('.coordinates');
 export let userChoiceTemperatureUnit;
 let currentTempInCelsOrFahrenheit;
 let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
 let map;
-export function getMaps(coordinates) {
-  mapboxgl.accessToken = "pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw";
+export function getMaps(coord) {
+  mapboxgl.accessToken = 'pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw';
   map = new mapboxgl.Map({
-    container: "map",
-    center: coordinates,
+    container: 'map',
+    center: coord,
     zoom: 9,
     interactive: false,
-    style: "mapbox://styles/mapbox/streets-v11",
+    style: 'mapbox://styles/mapbox/streets-v11',
   });
 }
 
@@ -48,13 +53,13 @@ function flyTo(coord) {
     essential: true,
   });
 }
-export let timeZone = "Europe/Minsk";
+export let timeZone = 'Europe/Minsk';
 export async function userLocation() {
   try {
-    const response = await fetch("https://ipinfo.io?token=6520844a54f3ec");
+    const response = await fetch('https://ipinfo.io?token=6520844a54f3ec');
     const resp = await response.json();
     timeZone = resp.timezone;
-    getMaps(resp.loc.split(",").reverse());
+    getMaps(resp.loc.split(',').reverse());
     getWeather(resp.city);
   } catch (err) {
     alert(projectSettings[language].errorOther);
@@ -63,7 +68,7 @@ export async function userLocation() {
 
 function createCurrentWeatherInfo(data) {
   const city = data.location.name;
-  const country = data.location.country;
+  const { country } = data.location;
   const iconCode = getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
   const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
@@ -79,13 +84,13 @@ function createCurrentWeatherInfo(data) {
   `;
 }
 function createFutureWeatherInfo(data) {
-  const weatherOn3Days = document.querySelector(".weatherOn3Days");
-  weatherOn3Days.innerHtml = "";
+  const weatherOn3Days = document.querySelector('.weatherOn3Days');
+  weatherOn3Days.innerHtml = '';
   data.forecast.forecastday.forEach((el) => {
     const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
     const iconCode = getIcon(el.day.condition.code);
     const weekDay = new Date(el.date).toLocaleString(language, {
-      weekday: "long",
+      weekday: 'long',
     });
     weatherOn3Days.innerHTML += `
     <div class='blockDayWeather'>
@@ -101,11 +106,11 @@ function createFutureWeatherInfo(data) {
 }
 
 function createWeatherInfo(data) {
-  userChoiceTemperatureUnit = localStorage.getItem("temperature") || document.querySelector(".active").dataset.value;
+  userChoiceTemperatureUnit = localStorage.getItem('temperature') || document.querySelector('.active').dataset.value;
   buttonsTemp.forEach((el) => {
-    el.classList.remove("active");
+    el.classList.remove('active');
     if (el.dataset.value === userChoiceTemperatureUnit) {
-      el.classList.add("active");
+      el.classList.add('active');
     }
   });
   currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
@@ -118,7 +123,7 @@ function createWeatherInfo(data) {
 }
 
 function createCoordinate(data) {
-  const getCoordinateString = (str) => `${str.replace(".", "&#176 ")} '`;
+  const getCoordinateString = (str) => `${str.replace('.', '&#176 ')} '`;
   coordinates.innerHTML = `
   <div>${projectSettings[language].latitude}: ${getCoordinateString(String(data.location.lat))}'</div>
   <div>${projectSettings[language].longitude}: ${getCoordinateString(String(data.location.lon))}'</div>
@@ -126,24 +131,24 @@ function createCoordinate(data) {
 }
 
 function cleanOldInfo() {
-  const weatherOn3Days = document.querySelector(".weatherOn3Days");
-  location.innerHTML = "";
-  temp.innerHTML = "";
-  innerInfo.innerHTML = "";
-  weatherOn3Days.innerHTML = "";
-  coordinates.innerHTML = "";
+  const weatherOn3Days = document.querySelector('.weatherOn3Days');
+  location.innerHTML = '';
+  temp.innerHTML = '';
+  innerInfo.innerHTML = '';
+  weatherOn3Days.innerHTML = '';
+  coordinates.innerHTML = '';
 }
 
 export function onSearch() {
   getWeather(inputCity.value);
   // getRandomImage();
-  inputCity.value = "";
+  inputCity.value = '';
 }
 
 export async function getRandomImage() {
   try {
     const response = await fetch(
-      "https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8"
+      'https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8'
     );
     const data = await response.json();
     document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% , url(${data.urls.full}), no-repeat`;

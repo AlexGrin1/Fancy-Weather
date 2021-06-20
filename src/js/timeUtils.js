@@ -1,13 +1,23 @@
-import { timeZone } from './weather.js';
-import { language } from './languageUtil.js';
+/* eslint-disable import/no-cycle */
+import { timeZone } from './weather';
+import { language } from './languageUtil';
+
 const time = document.getElementById('time');
 const dateId = document.getElementById('date');
 
 export function showDateAndTime() {
   const today = new Date();
-  const getTimezone = new Date(new Date().toLocaleString('en-US', { timeZone }));
-  const day = today.toLocaleString(language, { weekday: 'short' });
-  const month = today.toLocaleString(language, { month: 'long' });
+  const getTimezone = new Date(
+    new Date().toLocaleString('en-US', {
+      timeZone,
+    })
+  );
+  const day = today.toLocaleString(language, {
+    weekday: 'short',
+  });
+  const month = today.toLocaleString(language, {
+    month: 'long',
+  });
   const date = today.getDate();
   dateId.innerHTML = `${day} ${date} ${month}`;
 
