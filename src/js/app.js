@@ -48,5 +48,3 @@ document.addEventListener('DOMContentLoaded', () => {
 setInterval(() => {
   showDateAndTime();
 }, 1000);
-
-const bbb
