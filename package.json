@@ -16,7 +16,14 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.(js|jsx)": ["npm run lint:write", "git add"]
+    "*.js": [
+      "prettier --write src/**/*.js",
+      "git add"
+    ],
+"*.scss": [
+       "prettier --write src/**/*.scss", 
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
