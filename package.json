@@ -25,8 +25,7 @@
     "*.json": [
       "prettier --write src/**/*.json",
       "git add"
-    ],
-    "*.css": "stylelint --fix"
+    ]
   },
   "repository": {
     "type": "git",
