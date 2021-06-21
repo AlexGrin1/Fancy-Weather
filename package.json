@@ -16,16 +16,14 @@
     "stylelint": "npx stylelint \"**/*.scss\""
   },
   "lint-staged": {
+    
     "*.js": "eslint --cache --fix",
-    "*.scss": [
+    "src/**/*.{json,scss}":[
       "prettier --write src/**/*.scss",
       "git add"
-    ],
-    "*.json": [
-      "prettier --write src/**/*.json",
-      "git add"
-    ],
-    "*.css": "stylelint --fix"
+    ]
+    
+    
   },
   "repository": {
     "type": "git",
