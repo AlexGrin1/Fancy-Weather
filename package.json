@@ -18,12 +18,15 @@
   "lint-staged": {
     
     "*.js": "eslint --cache --fix",
-    "src/**/*.{json,scss}":[
+    "*.scss": [
       "prettier --write src/**/*.scss",
       "git add"
-    ]
-    
-    
+    ],
+    "*.json": [
+      "prettier --write src/**/*.json",
+      "git add"
+    ],
+    "*.css": "stylelint --fix"
   },
   "repository": {
     "type": "git",
