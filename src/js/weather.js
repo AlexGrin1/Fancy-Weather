@@ -32,7 +32,7 @@ export function getMaps(coord) {
 export async function getWeather(city) {
   try {
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`
+      `https://api.weatherapi.com/v1/forecast.json?key=e656736c26754e098db140545212405&q=${city}&days=4&lang=${language}`,
     );
     const data = await response.json();
     if (data.error && data.error.code === 1006) {
@@ -148,7 +148,7 @@ export function onSearch() {
 export async function getRandomImage() {
   try {
     const response = await fetch(
-      'https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8'
+      'https://api.unsplash.com/photos/random?orientation=landscape&per_page=1&query=nature&client_id=7wYU5zOAy4uV-EdWgZkKEbVoLxPO4CCd_fhjcsRp5v8',
     );
     const data = await response.json();
     document.body.style.background = `linear-gradient(rgba(8, 15, 26, 0.59) 0%, rgba(17, 17, 46, 0.46) 100%) 0% 0% , url(${data.urls.full}), no-repeat`;

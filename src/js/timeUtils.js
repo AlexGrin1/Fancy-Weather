@@ -10,7 +10,7 @@ export function showDateAndTime() {
   const getTimezone = new Date(
     new Date().toLocaleString('en-US', {
       timeZone,
-    })
+    }),
   );
   const day = today.toLocaleString(language, {
     weekday: 'short',
