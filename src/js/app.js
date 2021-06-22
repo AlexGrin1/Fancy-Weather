@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute('selected');
-    if (el.value.toUpperCase() === localStorage.getItem('language').toUpperCase()) {
+    if (el.value === localStorage.getItem('language')) {
       el.setAttribute('selected', '');
     }
   });
@@ -48,4 +48,3 @@ document.addEventListener('DOMContentLoaded', () => {
 setInterval(() => {
   showDateAndTime();
 }, 1000);
-const brr
