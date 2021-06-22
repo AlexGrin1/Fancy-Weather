@@ -8,6 +8,7 @@
   margin-bottom: 20px;
   padding-left: 10px;
 }
+
 .map_container {
   position: relative;
   display: flex;
@@ -17,19 +18,23 @@
   flex: 1;
   text-shadow: 0 0 10px black;
 }
+
 .coordinates {
   display: flex;
   flex-direction: column;
   text-align: end;
   margin-top: 20px;
 }
+
 #buttons_block {
   @include flex_center;
   margin: 7px;
 }
+
 #refreshAndLang {
   @include flex_center;
   margin: 7px;
+
   & > #choice_lang {
     width: 45px;
     height: 30px;
@@ -37,6 +42,7 @@
     background-color: $color_active;
     color: white;
     border-radius: 5px;
+
     &:hover {
       cursor: pointer;
       transform: scale(0.97);
@@ -44,6 +50,7 @@
       box-shadow: 0 0 10px black;
     }
   }
+
   & > #refreshImage {
     width: 30px;
     height: 30px;
@@ -53,10 +60,11 @@
     border-radius: 5px;
     padding: 10px;
     background-color: $color_active;
-    background-image: url("https://www.freeiconspng.com/thumbs/refresh-icon/refresh-icon-png-2.png");
+    background-image: url('https://www.freeiconspng.com/thumbs/refresh-icon/refresh-icon-png-2.png');
     background-size: 23px 23px;
     background-repeat: no-repeat;
     background-position: center;
+
     &:hover {
       box-shadow: 0 0 10px black;
       cursor: pointer;
@@ -65,9 +73,11 @@
     }
   }
 }
+
 #choice_temp {
   margin: 7px;
 }
+
 .cels,
 .fahrenheit {
   opacity: 0.7;
@@ -77,6 +87,7 @@
   border: none;
   border-radius: 5px;
   background-color: rgba(228, 228, 228, 0.123);
+
   &:hover {
     cursor: pointer;
     background-color: $color_active;
@@ -90,6 +101,7 @@
   opacity: 1;
   background-color: $color_active;
 }
+
 #map {
   overflow: hidden;
   position: relative;
@@ -98,15 +110,18 @@
   border-radius: 10% 10% 0 10%;
   box-shadow: 0 0 5px black;
 }
+
 .currentWeather {
   display: flex;
   margin: 10px;
 }
+
 .innerInfo {
   display: flex;
   flex-direction: column;
   margin-bottom: 15px;
 }
+
 .weather_info_title {
   display: flex;
   flex-direction: column;
@@ -115,6 +130,7 @@
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .time_info {
   display: flex;
   justify-content: flex-start;
@@ -123,10 +139,12 @@
   font-size: $inner_text;
   font-weight: 700;
 }
+
 #time {
   margin-left: 10px;
   font-weight: 700;
 }
+
 .temp_title {
   display: flex;
   justify-content: end;
@@ -135,36 +153,43 @@
   font-weight: bold;
   margin-left: 10px;
 }
+
 .info_element {
   margin-top: 10px;
   font-size: $inner_text;
   font-weight: 700;
   text-transform: uppercase;
 }
+
 .icon {
   position: relative;
   right: 45px;
   width: 100px;
   opacity: 0.9;
 }
+
 .weatherOn3Days {
   display: flex;
   font-weight: bold;
   text-transform: uppercase;
   margin: 10px;
 }
+
 .next_day_weather {
   margin: 10px;
   font-size: $title_text;
 }
+
 .blockDayWeather {
   display: flex;
   flex-direction: column;
 }
+
 .weekDayWeather,
 form {
   display: flex;
 }
+
 #search_block {
   & > input {
     height: 30px;
@@ -173,10 +198,12 @@ form {
     background-color: rgba(136, 136, 136, 0.123);
     border-radius: 5px 0 0 5px;
     padding-left: 5px;
+
     &::placeholder {
       color: white;
     }
   }
+
   & > button {
     height: 30px;
     color: white;
@@ -185,6 +212,7 @@ form {
     padding-left: 10px;
     padding-right: 10px;
     background-color: $color_active;
+
     &:hover {
       cursor: pointer;
       transform: scale(0.97);
@@ -193,6 +221,7 @@ form {
     }
   }
 }
+
 .hide {
   background-color: rgba(0, 0, 0, 0.342);
   min-height: 100vh;
