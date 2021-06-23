@@ -16,7 +16,10 @@
     "stylelint": "npx stylelint \"**/*.scss\""
   },
   "lint-staged": {
-    "*.js": "eslint --fix",
+    "*.js": [
+      "prettier",
+      "eslint --fix"
+    ],
     "*.scss": [
       "prettier --write src/**/*.scss",
       "git add"
