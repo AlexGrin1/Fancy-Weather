@@ -41,11 +41,9 @@ const iconCodes = {
 };
 export function getIcon(code) {
   const key = Object.keys(iconCodes).find((keyword) => iconCodes[keyword].includes(code));
-  if (key !== undefined) {
-    if (key === 'partlyCloudy' || key === 'clear') {
-      return `./assets/${key}${getTimesOfDay()}.svg`;
-    }
-    return `./assets/${key}.svg`;
+  if (!key) return './assets/cloudy.svg';
+  if (['partlyCloudy', 'clear'].includes(key)) {
+    return `./assets/${key}${getTimesOfDay()}.svg`;
   }
-  return './assets/cloudy.svg';
+  return `./assets/${key}.svg`;
 }
