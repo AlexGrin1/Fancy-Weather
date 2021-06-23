@@ -17,15 +17,16 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier",
+      "prettier --write src/**/*.js",
       "eslint --fix"
     ],
     "*.scss": [
       "prettier --write src/**/*.scss",
+      "npm run stylelint",
       "git add"
     ],
     "*.json": [
-      "prettier --write",
+      "prettier --write *.json",
       "git add"
     ]
   },
