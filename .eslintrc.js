@@ -15,6 +15,11 @@ module.exports = {
     eqeqeq: ['error', 'always'],
     'object-curly-spacing': ['error', 'always'],
     'linebreak-style': 'off',
+    'import/no-cycle': 'off',
+    'import/no-mutable-exports': 'off',
+    'no-undef': 'off',
+    'no-use-before-define': 'off',
+    'no-alert': 'off',
   },
   plugins: ['prettier'],
 };

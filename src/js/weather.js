@@ -43,7 +43,6 @@ export async function getWeather(city) {
       alert(projectSettings[language].errorFindCity);
     }
     const locationGeo = [data.location.lon, data.location.lat];
-    console.log(data, data.location.tz_id);
     timeZone = data.location.tz_id;
     createWeatherInfo(data);
     flyTo(locationGeo);
