@@ -7,7 +7,28 @@
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "lint:fix": "eslint src/ --fix",
+    "eslint": "node_modules/.bin/eslint src/",
+    "prettier": "prettier --write src/**/*.{js,scss}",
+    "lint:eslint": "eslint src/",
+    "prepare": "husky install",
+    "stylelint": "npx stylelint \"**/*.scss\""
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write src/**/*.js",
+      "eslint --fix"
+    ],
+    "*.scss": [
+      "prettier --write src/**/*.scss",
+      "npm run stylelint",
+      "git add"
+    ],
+    "*.json": [
+      "prettier --write *.json",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -24,13 +45,23 @@
     "copy-webpack-plugin": "^9.0.0",
     "cross-env": "^7.0.3",
     "css-loader": "^5.2.4",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.1",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "mini-css-extract-plugin": "^1.6.0",
     "node-sass": "^6.0.0",
+    "prettier": "^2.3.1",
     "sass-loader": "^11.1.0",
     "style-loader": "^2.0.0",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard-scss": "^1.1.0",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.7.0"
   },

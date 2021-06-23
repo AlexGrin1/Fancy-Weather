@@ -1,4 +1,4 @@
-import "../styles/style.scss";
+import '../styles/style.scss';
 
 import {
   location,
@@ -8,40 +8,37 @@ import {
   getWeather,
   onSearch,
   getRandomImage,
-} from "./weather.js";
-import { showDateAndTime } from "./timeUtils.js";
-import { lang, changeLanguage, currentLocation } from "./languageUtil.js";
+} from './weather';
+import { showDateAndTime } from './timeUtils';
+import { lang, changeLanguage, currentLocation } from './languageUtil';
 
-document.addEventListener("DOMContentLoaded", (event) => {
-  const refreshImage = document.getElementById("refreshImage");
-  const variantsLanguage = document.querySelectorAll("option");
-  const form = document.querySelector("form");
-  //getRandomImage();
+document.addEventListener('DOMContentLoaded', () => {
+  const refreshImage = document.getElementById('refreshImage');
+  const variantsLanguage = document.querySelectorAll('option');
+  const form = document.querySelector('form');
+  getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
-    el.removeAttribute("selected");
-    if (
-      el.value.toUpperCase() === localStorage.getItem("language").toUpperCase()
-    ) {
-      el.setAttribute("selected", "");
+    el.removeAttribute('selected');
+    if (el.value === localStorage.getItem('language')) {
+      el.setAttribute('selected', '');
     }
   });
-
-  form.addEventListener("submit", (event) => {
+  form.addEventListener('submit', (event) => {
     event.preventDefault();
     onSearch();
   });
-  blockChoiceTemp.addEventListener("click", (event) => {
+  blockChoiceTemp.addEventListener('click', (event) => {
     if (userChoiceTemperatureUnit !== event.target.dataset.value) {
-      localStorage.setItem("temperature", event.target.dataset.value);
+      localStorage.setItem('temperature', event.target.dataset.value);
       getWeather(location.textContent);
     }
   });
-  refreshImage.addEventListener("click", (event) => {
+  refreshImage.addEventListener('click', () => {
     getRandomImage();
   });
 
-  lang.addEventListener("change", (event) => {
+  lang.addEventListener('change', (event) => {
     changeLanguage(event.target.value);
     getWeather(currentLocation.textContent);
   });
