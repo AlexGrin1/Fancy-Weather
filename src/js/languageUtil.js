@@ -1,5 +1,3 @@
-/* eslint-disable import/no-mutable-exports */
-/* eslint-disable import/no-cycle */
 import { projectSettings } from './projectSettings';
 
 export const lang = document.getElementById('choice_lang');

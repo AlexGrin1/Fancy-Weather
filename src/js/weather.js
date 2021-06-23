@@ -1,8 +1,3 @@
-/* eslint-disable no-alert */
-/* eslint-disable no-use-before-define */
-/* eslint-disable import/no-mutable-exports */
-/* eslint-disable import/no-cycle */
-/* eslint-disable no-undef */
 import { projectSettings, getIcon } from './projectSettings';
 import { language } from './languageUtil';
 
@@ -18,6 +13,7 @@ let currentTempInCelsOrFahrenheit;
 let feelsLikeTempInCelsOrFahrenheit;
 let maxTempInCelsOrFahrenheit;
 let map;
+
 export function getMaps(coord) {
   mapboxgl.accessToken = 'pk.eyJ1IjoiamVyb21pdHJ1IiwiYSI6ImNrcDV0MXRmMjF4bDQyb213NGpxZTNiNDkifQ.VgwARiMKZjGIkaYakkpQQw';
   map = new mapboxgl.Map({
@@ -29,6 +25,14 @@ export function getMaps(coord) {
   });
 }
 
+function flyTo(coord) {
+  map.flyTo({
+    center: coord,
+    essential: true,
+  });
+}
+
+export let timeZone = 'Europe/Minsk';
 export async function getWeather(city) {
   try {
     const response = await fetch(
@@ -39,21 +43,15 @@ export async function getWeather(city) {
       alert(projectSettings[language].errorFindCity);
     }
     const locationGeo = [data.location.lon, data.location.lat];
+    console.log(data, data.location.tz_id);
     timeZone = data.location.tz_id;
     createWeatherInfo(data);
     flyTo(locationGeo);
   } catch (err) {
     alert(projectSettings[language].errorOther);
-    userLocation();
   }
 }
-function flyTo(coord) {
-  map.flyTo({
-    center: coord,
-    essential: true,
-  });
-}
-export let timeZone = 'Europe/Minsk';
+
 export async function userLocation() {
   try {
     const response = await fetch('https://ipinfo.io?token=6520844a54f3ec');
@@ -62,7 +60,7 @@ export async function userLocation() {
     getMaps(resp.loc.split(',').reverse());
     getWeather(resp.city);
   } catch (err) {
-    alert(projectSettings[language].errorOther);
+    alert(err);
   }
 }
 
@@ -83,6 +81,7 @@ function createCurrentWeatherInfo(data) {
   <div class='info_element'>${projectSettings[language].humidity}: ${humidityInfo}%</div>
   `;
 }
+
 function createFutureWeatherInfo(data) {
   const weatherOn3Days = document.querySelector('.weatherOn3Days');
   weatherOn3Days.innerHtml = '';
@@ -105,6 +104,23 @@ function createFutureWeatherInfo(data) {
   });
 }
 
+function cleanOldInfo() {
+  const weatherOn3Days = document.querySelector('.weatherOn3Days');
+  location.innerHTML = '';
+  temp.innerHTML = '';
+  innerInfo.innerHTML = '';
+  weatherOn3Days.innerHTML = '';
+  coordinates.innerHTML = '';
+}
+
+function createCoordinate(data) {
+  const getCoordinateString = (str) => `${str.replace('.', '&#176 ')} '`;
+  coordinates.innerHTML = `
+  <div>${projectSettings[language].latitude}: ${getCoordinateString(String(data.location.lat))}'</div>
+  <div>${projectSettings[language].longitude}: ${getCoordinateString(String(data.location.lon))}'</div>
+  `;
+}
+
 function createWeatherInfo(data) {
   userChoiceTemperatureUnit = localStorage.getItem('temperature') || document.querySelector('.active').dataset.value;
   buttonsTemp.forEach((el) => {
@@ -122,29 +138,6 @@ function createWeatherInfo(data) {
   createCoordinate(data);
 }
 
-function createCoordinate(data) {
-  const getCoordinateString = (str) => `${str.replace('.', '&#176 ')} '`;
-  coordinates.innerHTML = `
-  <div>${projectSettings[language].latitude}: ${getCoordinateString(String(data.location.lat))}'</div>
-  <div>${projectSettings[language].longitude}: ${getCoordinateString(String(data.location.lon))}'</div>
-  `;
-}
-
-function cleanOldInfo() {
-  const weatherOn3Days = document.querySelector('.weatherOn3Days');
-  location.innerHTML = '';
-  temp.innerHTML = '';
-  innerInfo.innerHTML = '';
-  weatherOn3Days.innerHTML = '';
-  coordinates.innerHTML = '';
-}
-
-export function onSearch() {
-  getWeather(inputCity.value);
-  // getRandomImage();
-  inputCity.value = '';
-}
-
 export async function getRandomImage() {
   try {
     const response = await fetch(
@@ -155,4 +148,9 @@ export async function getRandomImage() {
   } catch (err) {
     alert(projectSettings[language].errorImages);
   }
+}
+export function onSearch() {
+  getWeather(inputCity.value);
+  getRandomImage();
+  inputCity.value = '';
 }

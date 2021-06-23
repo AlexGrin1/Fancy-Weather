@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const refreshImage = document.getElementById('refreshImage');
   const variantsLanguage = document.querySelectorAll('option');
   const form = document.querySelector('form');
-  // getRandomImage();
+  getRandomImage();
   userLocation();
   variantsLanguage.forEach((el) => {
     el.removeAttribute('selected');
@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
       el.setAttribute('selected', '');
     }
   });
-
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     onSearch();
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   lang.addEventListener('change', (event) => {
     changeLanguage(event.target.value);
-    // changeLanguage(event.target.value);
     getWeather(currentLocation.textContent);
   });
 });

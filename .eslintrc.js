@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 module.exports = {
   env: {
     browser: true,
@@ -11,7 +10,6 @@ module.exports = {
   },
   rules: {
     semi: ['error', 'always'],
-    // quotes: ["error", "single"],
     'default-case': ['error', { commentPattern: '^skip\\sdefault' }],
     'keyword-spacing': ['error', { after: true }],
     eqeqeq: ['error', 'always'],

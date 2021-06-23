@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { timeZone } from './weather';
 import { language } from './languageUtil';
 
