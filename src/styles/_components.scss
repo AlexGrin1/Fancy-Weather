@@ -28,11 +28,13 @@
 
 #buttons_block {
   @include flex_center;
+
   margin: 7px;
 }
 
 #refreshAndLang {
   @include flex_center;
+
   margin: 7px;
 
   & > #choice_lang {

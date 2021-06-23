@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   lang.addEventListener('change', (event) => {
     changeLanguage(event.target.value);
-    // changeLanguage(event.target.value);
     getWeather(currentLocation.textContent);
   });
 });
