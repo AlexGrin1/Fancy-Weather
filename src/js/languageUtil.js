@@ -6,9 +6,9 @@ const input = document.querySelector('input');
 export const currentLocation = document.getElementById('location');
 export let language = localStorage.getItem('language') || 'en';
 
-export function changeLanguage(languag) {
-  language = languag;
+export function changeLanguage(thisLanguage) {
+  language = thisLanguage;
   buttonSearch.innerHTML = projectSettings[language].search;
   input.setAttribute('placeholder', projectSettings[language].placeholder);
-  localStorage.setItem('language', languag);
+  localStorage.setItem('language', thisLanguage);
 }

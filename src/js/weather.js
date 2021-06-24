@@ -9,9 +9,6 @@ export const blockChoiceTemp = document.querySelector('#choice_temp');
 export const buttonsTemp = blockChoiceTemp.querySelectorAll('button');
 export const coordinates = document.querySelector('.coordinates');
 export let userChoiceTemperatureUnit;
-let currentTempInCelsOrFahrenheit;
-let feelsLikeTempInCelsOrFahrenheit;
-let maxTempInCelsOrFahrenheit;
 let map;
 
 export function getMaps(coord) {
@@ -68,11 +65,11 @@ function createCurrentWeatherInfo(data) {
   const { country } = data.location;
   const iconCode = getIcon(data.current.condition.code);
   const weatherText = data.current.condition.text;
-  const feelsLikeInfo = Math.round(data.current[feelsLikeTempInCelsOrFahrenheit]);
+  const feelsLikeInfo = Math.round(data.current[`feelslike_${userChoiceTemperatureUnit}`]);
   const windInfo = Math.round(data.current.wind_kph * (5 / 18));
   const humidityInfo = data.current.humidity;
   location.textContent = `${city}, ${country}`;
-  temp.innerHTML = `${Math.round(data.current[currentTempInCelsOrFahrenheit])}&#176`;
+  temp.innerHTML = `${Math.round(data.current[`temp_${userChoiceTemperatureUnit}`])}&#176`;
   innerInfo.innerHTML = `<img src=${iconCode} class='icon'>
   <div class='info_element'>${weatherText}</div>
   <div class='info_element'>${projectSettings[language].feel}: ${feelsLikeInfo} &#176</div>
@@ -85,7 +82,7 @@ function createFutureWeatherInfo(data) {
   const weatherOn3Days = document.querySelector('.weatherOn3Days');
   weatherOn3Days.innerHtml = '';
   data.forecast.forecastday.forEach((el) => {
-    const celsOrFahrenheit = Math.round(el.day[maxTempInCelsOrFahrenheit]);
+    const celsOrFahrenheit = Math.round(el.day[`maxtemp_${userChoiceTemperatureUnit}`]);
     const iconCode = getIcon(el.day.condition.code);
     const weekDay = new Date(el.date).toLocaleString(language, {
       weekday: 'long',
@@ -128,9 +125,6 @@ function createWeatherInfo(data) {
       el.classList.add('active');
     }
   });
-  currentTempInCelsOrFahrenheit = `temp_${userChoiceTemperatureUnit}`;
-  feelsLikeTempInCelsOrFahrenheit = `feelslike_${userChoiceTemperatureUnit}`;
-  maxTempInCelsOrFahrenheit = `maxtemp_${userChoiceTemperatureUnit}`;
   cleanOldInfo();
   createCurrentWeatherInfo(data);
   createFutureWeatherInfo(data);
