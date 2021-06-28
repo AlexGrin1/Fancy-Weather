@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import 'constants';
+@import 'mixins';
+@import 'components';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: rgba(0, 0, 0, 0.877);
+  color: rgb(247, 241, 232);
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 3;
+  height: 5vh;
+  padding: 30px 60px;
+  text-shadow: 0 0 10px black;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  padding: 0 60px 20px 60px;
+  text-shadow: 0 0 10px black;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 800px) {
+  .header {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .map_container,
+  .weather_container {
+    align-items: center;
+  }
+
+  .coordinates {
+    text-align: center;
+  }
+
+  .weahter_info_title {
+    font-size: $title_text * 0.8;
+  }
+
+  .temp_title {
+    font-size: $current_temp * 0.8;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .header {
+    flex-direction: column;
+    padding-top: 10px;
+    margin-bottom: 30px;
+  }
+
+  .weatherOn3Days {
+    flex-direction: column;
+  }
+
+  .weahter_info_title {
+    font-size: $title_text * 0.6;
+  }
+
+  .temp_title {
+    font-size: $current_temp * 0.6;
+  }
+
+  #map {
+    width: 200px;
+    height: 200px;
+  }
+
+  .locationAndTime {
+    order: -1;
+  }
+}
